@@ -1,0 +1,26 @@
+{
+  "name": "study_nodebird_twitter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "next -p 3033"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Heoyejin/study_nodebird_twitter.git"
+  },
+  "author": "HoooYejin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Heoyejin/study_nodebird_twitter/issues"
+  },
+  "homepage": "https://github.com/Heoyejin/study_nodebird_twitter#readme",
+  "dependencies": {
+    "next": "^9.5.5",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}
