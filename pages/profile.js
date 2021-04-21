@@ -1,6 +1,14 @@
+import React from 'react';
+import Head from 'next/head';
+
 const Profile = () => {
   return (
-    <div>내 프로필</div>
+    <>
+      <Head>
+        <title>프로필</title>
+      </Head>
+      <div>내 프로필</div>
+    </>
   )
 }
 
