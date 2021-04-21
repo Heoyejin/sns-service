@@ -3,10 +3,20 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Menu, Input, Row, Col  } from 'antd';
 
+import UserProfile from '../components/UserProfile';
 import LoginForm from '../components/LoginForm';
+
+// style을 컴포넌트 쓰기 싫으면 useMome 사용가능
+// const SearchInput = styled(Input.Search)`
+//   vertical-align: 'middle';
+// `;
+
+const { Search } = Input;
 // index, profile, signup 페이지에서 공통적으로 사용할 레이아웃 생성
 const AppLayout = ({ children }) => {
   const [isLogged, setIsLogged] = useState(false);
+  const style = useMemo(() => ({ marginTop: 10 }), []);
+  
   return (
     <div>
       <Menu mode="horizontal">
