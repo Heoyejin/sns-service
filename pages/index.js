@@ -1,7 +1,11 @@
+import React from 'react';
+import AppLayout from '../components/AppLayout';
 
 const Home = () => {
   return (
-    <div>홈 화면</div>
+    <AppLayout>
+      <div>홈 화면</div>
+    </AppLayout>
   )
 }
 
