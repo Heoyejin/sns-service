@@ -30,7 +30,7 @@ const AppLayout = ({ children }) => {
         <Search style={style}></Search>
       </Menu.Item>
       <Menu.Item>
-        <Link href='/sigup'><a>회원가입</a></Link>
+        <Link href='/signup'><a>회원가입</a></Link>
       </Menu.Item>
       </Menu> 
       <Row gutter={8}>
