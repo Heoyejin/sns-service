@@ -1,72 +1,21 @@
-import HYDRATE from 'next-redux-wrapper';
-
-// store - 전역에서 공통으로 사용할 변수 모음
-const initalState = {
-  user: {
-    isLoggedIn: false,
-    user: null, 
-    signUpdata: {},
-    loginData: {}
-  },
-  post: {
-    mainPosts: {}
-  }
-};
-
-export const loginAction = (data) => {
-  return {
-    type: 'LOG_IN',
-    data
-  }
-};
-
-export const logoutAction = () => {
-  return {
-    type: 'LOG_OUT'
-  }
-};
-/*
- * nickname을 변경하는 함수로 만들어서 중복 동작을 처리 하기
- * 아래와 같이 변경할 때마다 변수를 선언해 주는건 오바
- * const changeNickname = {
-    type: 'CHANGE_NICKNAME',
-    data: 'yeeeeeeeeah'
-  }
-  * store.dispatch(changeNickname('yeeeeeeah'))
-  * const changeNickname = (name) => {
-      return {
-        type: 'CHANGE_NICKNAME',
-        name
-      }
-    };
-*/
+import { HYDRATE } from 'next-redux-wrapper';
+import { combineReducers } from 'redux';
+import user from './user';
+import post from './post';
 
 // 이전 상태와 action을 통해서 다음 상태를 만들어 내는 함수
-const rootReducer = (state = initalState, action) => {
-  switch (action.type) {
-    case HYDRATE: 
-      return {...state, ...action.payload}
-    case 'LOG_IN' : 
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          isLoggedIn: true,
-          user: action.data
-        }
-      }
-    case 'LOG_OUT' : 
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          isLoggedIn: false,
-          user: null
-        }
-      }
-    default:
-      return state;
-  }
-}
+const rootReducer = combineReducers({
+  // index는 없어도 되는데 서버사이드 렌더링을 위해  HYDRATE를 넣어주기 위해 index reducer를 추가해줌
+  index: (state = {}, action) => {
+    switch (action.type) {
+      case HYDRATE: 
+        return {...state, ...action.payload}
+      default:
+        return state;
+    }
+  },
+  user, 
+  post,
+});
 
 export default rootReducer;
