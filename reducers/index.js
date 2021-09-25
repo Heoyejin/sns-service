@@ -1,3 +1,5 @@
+import HYDRATE from 'next-redux-wrapper';
+
 // store - 전역에서 공통으로 사용할 변수 모음
 const initalState = {
   user: {
@@ -42,6 +44,8 @@ export const logoutAction = () => {
 // 이전 상태와 action을 통해서 다음 상태를 만들어 내는 함수
 const rootReducer = (state = initalState, action) => {
   switch (action.type) {
+    case HYDRATE: 
+      return {...state, ...action.payload}
     case 'LOG_IN' : 
       return {
         ...state,
@@ -60,6 +64,8 @@ const rootReducer = (state = initalState, action) => {
           user: null
         }
       }
+    default:
+      return state;
   }
 }
 
