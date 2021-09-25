@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Form, Input, Button } from 'antd';
@@ -16,14 +16,13 @@ const FormWrapper = styled(Form)`
 `;
 
 const LoginForm = () => {
-  const dispatch = useDispatch();
   const [id, onChangeId] = useInput('');
   const [password, onChangePassWord] = useInput('');
+  const dispatch = useDispatch();
 
-  const onSubmitForm = useCallback((e) => {
-    console.log(id, password);
+  const onSubmitForm = useCallback(() => {
     dispatch(loginAction({id, password}));
-  }, []);
+  }, [id, password]);
 
   return (
     <>
