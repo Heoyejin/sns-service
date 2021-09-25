@@ -18,12 +18,15 @@
   },
   "homepage": "https://github.com/Heoyejin/study_nodebird_twitter#readme",
   "dependencies": {
-    "antd": "^4.15.2",
     "@ant-design/icons": "^4.6.2",
+    "antd": "^4.15.2",
     "next": "^9.5.5",
+    "next-redux-wrapper": "^7.0.5",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-redux": "^7.2.5",
+    "redux": "^4.1.1",
     "styled-components": "^5.2.3"
   },
   "devDependencies": {
