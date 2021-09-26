@@ -5,7 +5,7 @@ export const initalState = {
       id: 1,
       nickname: '호예진',
     },
-    content: '첫 번째 게시글',
+    content: '첫 번째 게시글 #또치 #고양이',
     Images: [{
       src: 'https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726',
     }, {
