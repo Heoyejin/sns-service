@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { Card, Popover, Button, Avatar, List, Comment } from "antd";
 import { RetweetOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
+import PostImages from './PostImages';
 import CommentForm from './CommnetForm';
 
 const PostCard = ({ post }) => {
