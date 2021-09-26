@@ -1,6 +1,6 @@
 const initalState = {
   isLoggedIn: false,
-  user: null, 
+  me: null, 
   signUpdata: {},
   loginData: {}
 };
