@@ -3,15 +3,24 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { Card, Popover, Button, Avatar, List, Comment } from "antd";
 import { RetweetOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
+import CommentForm from './CommnetForm';
+
 const PostCard = ({ post }) => {
   const id = useSelector((state) => state.user.me?.id);
   // optional chaning 연산자 - me가 있으면 id가 들어가고 없으면 undefined가 들어가는 연산자
   // const id = me?.id;
   const [liked, setLiked] = useState(false);
+  const [commentFormOpened, setCommentFormOpened] = useState(false);
+
   const onToggleLike = useCallback((e) => {
     console.log("onToggelLike", e.target);
     setLiked((prev) => !prev);
   }, []);
+
+  const onToggleComment = useCallback(() => {
+    setCommentFormOpened((prev) => !prev);
+  }, []);
+
   return (
     <>
       <div style={{ marginBottom: 20 }}>
@@ -45,6 +54,26 @@ const PostCard = ({ post }) => {
           </Card.Meta>
           <Button></Button>
         </Card>
+        {
+          commentFormOpened && 
+          <div>
+            <CommentForm post={post}/>
+            <List 
+              header={ `${post.Comments.length}개의 댓글` }
+              itemLayout='horizontal'
+              dataSource={post.Comments}
+              renderItem={(item) => (
+                <li>
+                  <Comment 
+                    author={item.User.nickname}
+                    avatar={<Avatar>{item.User.nickname}</Avatar>}
+                    content={item.content}
+                  />
+                </li>
+              )}
+            />
+          </div>
+        }
       </div>
     </>
   )
