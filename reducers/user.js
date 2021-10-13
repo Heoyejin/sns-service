@@ -5,9 +5,38 @@ const initalState = {
   loginData: {}
 };
 
+// redux-thunk는 하나의 Action에서 여러개의 dispatch를 할 수 있는 기능
 export const loginAction = (data) => {
+  return (dispath, getState) => {
+    // const state = getState();
+    dispath(loginRequestAction());
+    axios.post('/api/login')
+      .then((res) => {
+        dispath(loginSuccessAction(res.data));
+      })
+      .catch((err) => {
+        dispath(loginFaliureAction(err));
+      })
+  }
+};
+
+export const loginRequestAction = (data) => {
   return {
-    type: 'LOG_IN',
+    type: 'LOG_IN_REQUEST',
+    data
+  }
+};
+
+export const loginSuccessAction = (data) => {
+  return {
+    type: 'LOG_IN_ACTION',
+    data
+  }
+};
+
+export const loginFaliureAction = (data) => {
+  return {
+    type: 'LOG_IN_FALIURE',
     data
   }
 };
