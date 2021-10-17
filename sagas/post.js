@@ -5,7 +5,7 @@ import {
   ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE, 
   REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, REMOVE_POST_FAILURE
 } from '../reducers/post';
-import { ADD_POST_TO_ME } from '../reducers/user';
+import { ADD_POST_OF_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 import shortid from 'shortid';
 /****** AddPost ******/
 function addPostAPI() {
@@ -28,7 +28,7 @@ function* addPost(action) {
       }
     });
     yield put({
-      type: ADD_POST_TO_ME,
+      type: ADD_POST_OF_ME,
       data: id
     });
   } catch (err) {
