@@ -1,5 +1,3 @@
-import { NormalModuleReplacementPlugin } from "webpack";
-
 export const initalState = {
   mainPosts: [{
     id: 1,
@@ -69,15 +67,6 @@ export const addComment = (data) => {
   }
 };
 
-// const ADD_COMMENT = 'ADD_POST';
-// export const addComment = (data) => {
-//   console.log(data);
-//   return {
-//     type: ADD_COMMENT,
-//     data: data
-//   }
-// };
-
 const reducer = (state = initalState, action) => {
   switch (action.type) {
     case ADD_POST_REQUEST: 
@@ -86,40 +75,40 @@ const reducer = (state = initalState, action) => {
         addPostLoading: true,
         addPostDone: false,
         addPostError: null
-      }
+      };
     case ADD_POST_SUCCESS:
       return {
         ...state,
         mainPosts: [dummyPost, ...state.mainPosts],
         addPostLoading: false,
         addPostDone: true,
-      }
+      };
     case ADD_POST_FAILURE: 
       return {
         ...state,
         addPostLoading: false,
         addPostError: action.eror,
-      }
+      };
     case ADD_COMMENT_REQUEST: 
       return {
         ...state,
         addCommentLoading: true,
         addCommentDone: false,
         addCommentError: null
-      }
+      };
     case ADD_COMMENT_SUCCESS:
       return {
         ...state,
         // mainComments: [dummyComment, ...state.mainComments],
         addCommentLoading: false,
         addCommentDone: true,
-      }
+      };
     case ADD_COMMENT_FAILURE: 
       return {
         ...state,
         addCommentLoading: false,
         addCommentError: action.error,
-      }
+      };
     default:
       return state;
   }
