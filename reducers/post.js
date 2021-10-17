@@ -2,25 +2,30 @@ import shortid from "shortid";
 
 export const initalState = {
   mainPosts: [{
-    id: 1,
+    id: shortid.generate(),
     User: {
-      id: 1,
+      id: shortid.generate(),
       nickname: '호예진',
     },
     content: '첫 번째 게시글 #또치 #고양이',
     Images: [{
+      id: shortid.generate(),
       src: 'https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726',
     }, {
+      id: shortid.generate(),
       src: 'https://gimg.gilbut.co.kr/book/BN001958/rn_view_BN001958.jpg',
     }, {
+      id: shortid.generate(),
       src: 'https://gimg.gilbut.co.kr/book/BN001998/rn_view_BN001998.jpg',
     }],
     Comments: [{
+      id: shortid.generate(),
       User: {
         nickname: 'dooch___u',
       },
       content: '또치 너무 귀여워요',
     }, {
+      id: shortid.generate(),
       User: {
         nickname: 'dooch___u',
       },
@@ -34,11 +39,14 @@ export const initalState = {
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
+  removeCommentLoading: false,
+  removeCommentDone: false,
+  removeCommentError: null,
 };
 
 const dummyPost = (data) => ({
-  id: shortid.generate(),
-  content: data,
+  id: data.id,
+  content: data.content,
   User: {
     id: 1,
     nickname: '호예진',
@@ -59,6 +67,10 @@ const dummyComment = (data) => ({
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
+
+export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
+export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
+export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
 
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
@@ -88,6 +100,7 @@ const reducer = (state = initalState, action) => {
         addPostError: null
       };
     case ADD_POST_SUCCESS:
+      console.log(action.data);
       return {
         ...state,
         mainPosts: [dummyPost(action.data), ...state.mainPosts],
@@ -108,6 +121,7 @@ const reducer = (state = initalState, action) => {
         addCommentError: null
       };
     case ADD_COMMENT_SUCCESS:
+      // 로직이 너무 .. ㅂㅗㄱㅈㅏㅂㅎㅏㅁ..
       const postIndex = state.mainPosts.findIndex((v) => v.id === action.data.postId);
       const post = { ...state.mainPosts[postIndex] };
       post.Comments = [dummyComment(action.data.content), ...post.Comments];
@@ -124,6 +138,27 @@ const reducer = (state = initalState, action) => {
         ...state,
         addCommentLoading: false,
         addCommentError: action.error,
+      };
+    case REMOVE_POST_REQUEST: 
+      return {
+        ...state,
+        removePostLoading: true,
+        removePostDone: false,
+        removePostError: null
+      };
+    case REMOVE_POST_SUCCESS:
+      console.log(action.data);
+      return {
+        ...state,
+        mainPosts: state.mainPosts.filter((v) => v.id != action.data),
+        removePostLoading: false,
+        removePostDone: true,
+      };
+    case REMOVE_POST_FAILURE: 
+      return {
+        ...state,
+        removePostLoading: false,
+        removePostError: action.eror,
       };
     default:
       return state;
