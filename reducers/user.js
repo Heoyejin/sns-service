@@ -26,6 +26,7 @@ export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
 
+
 export const FOLLOW_REQUEST = 'FOLLOW_REQUEST';
 export const FOLLOW_SUCCESS = 'FOLLOW_SUCCESS';
 export const FOLLOW_FAILURE = 'FOLLOW_FAILURE';
@@ -36,11 +37,11 @@ export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
 
 const dummyUser = (data) => ({
   ...data,
-  nickName: '호예진',
+  nickname: '호예진',
   id: 1,
-  Post: [],
-  Followings: [],
-  Followers: []
+  Posts: [{ id: 1 }],
+  Followings: [{ nickname: '또치' }, { nickname: 'Chanho Lee' }, { nickname: 'neue zeal' }],
+  Followers: [{ nickname: '하위' }, { nickname: 'Chanho Lee' }, { nickname: 'neue zeal' }],
 });
 
 export const loginRequestAction = (data) => {
@@ -58,13 +59,14 @@ export const logoutRequestAction = () => {
 
 const reducer = (state = initalState, action) => {
   switch (action.type) {
-    case LOG_IN_REQUEST : 
+    case LOG_IN_REQUEST: 
       return {
         ...state,
         logInLoading: true,
         loginError: null
       }
-    case LOG_IN_SUCCESS : 
+    case LOG_IN_SUCCESS:
+      console.log('LOG_IN_SUCCESS', action.data);
       return {
         ...state,
         logInLoading: false,

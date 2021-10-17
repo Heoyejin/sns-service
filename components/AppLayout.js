@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
@@ -15,7 +15,7 @@ import LoginForm from '../components/LoginForm';
 const { Search } = Input;
 // index, profile, signup 페이지에서 공통적으로 사용할 레이아웃 생성
 const AppLayout = ({ children }) => {
-  const isLoggIn = useSelector((state) => state.user.isLoggedIn)
+  const { me } = useSelector((state) => state.user);
   const style = useMemo(() => ({ marginTop: 10 }), []);
   
   return (
@@ -38,7 +38,7 @@ const AppLayout = ({ children }) => {
         {/* xs: 24=100% 기준으로  md:차지할 비율 */}
         {/* https://ant.design/components/grid/ 참고*/}
         <Col xs={24} md={6}>
-          { isLoggIn ? <UserProfile/> : <LoginForm/> }
+          { me ? <UserProfile/> : <LoginForm/> }
         </Col>
         <Col xs={24} md={12}>
           {children}

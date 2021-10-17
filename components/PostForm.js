@@ -1,14 +1,19 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Input } from 'antd';
 import { addPost } from '../reducers/post';
+import useInput from './hooks/useInput';
 
 const PostForm = () => {
-  const imagePaths = useSelector((state) => state.imagePaths);
-  const [text, setText] = useState('');
-  const onChangeText = useCallback((e) => {
-    setText(e.target.value);
-  });
+  const { imagePaths, addPostDone } = useSelector((state) => state.imagePaths);
+  const dispatch = useDispatch();
+  const [text, onChangeText, setText] = useInput('');
+  
+  useEffect(() => {
+    if (addPostDone) {
+      setText('');
+    }
+  }, [addPostDone]);
 
   // 실제 Dom에 접근하기 위해서 ref를 사용함.
   const imageInput = useRef();
@@ -16,11 +21,9 @@ const PostForm = () => {
     imageInput.current.click();
   }, [imageInput.current]);
 
-  const dispatch = useDispatch();
   const onSubmit = useCallback(() => {
-    dispatch(addPost);
-    setText('');
-  }, []);
+    dispatch(addPost(text));
+  }, [text]);
 
   return (
     <>
