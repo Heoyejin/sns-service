@@ -3,34 +3,12 @@ import produce from 'immer';
 import faker from 'faker';
 
 export const initalState = {
-  mainPosts: [{
-    id: shortid.generate(),
-    User: {
-      id: shortid.generate(),
-      nickname: faker.name.findName()
-    },
-    content: faker.lorem.paragraph(),
-    Images: [{
-      id: shortid.generate(),
-      src: faker.image.imageUrl(),
-    }],
-    Comments: [{
-      id: shortid.generate(),
-      User: {
-        id: shortid.generate(),
-        nickname: faker.name.findName()
-      },
-      content: faker.lorem.sentence(),
-    }, {
-      id: shortid.generate(),
-      User: {
-        id: shortid.generate(),
-        nickname: faker.name.findName()
-      },
-      content: faker.lorem.sentence(),
-    }]
-  }],
+  mainPosts: [],
   imagePaths: [], // 이미지 업로드 경로
+  hasMorePost: true,
+  loadPostLoading: false,
+  loadPostDone: false,
+  loadPostError: null,
   addPostLoading: false,
   addPostDone: false,
   addPostError: null,
@@ -42,28 +20,25 @@ export const initalState = {
   addCommentError: null,
 };
 
-// 더미 데이터 만들기 
-// https://www.npmjs.com/package/faker
-initalState.mainPosts = initalState.mainPosts.concat(
-  Array(20).fill().map((v, i) => ({
+// 게시물 데이터를 더미데이터가 아니라 서버에서 10개씩 받아오는 로직 구현
+export const generateDummyPost = (number) => Array(number).fill().map(() => ({
+  id: shortid.generate(),
+  User: {
     id: shortid.generate(),
+    nickname: faker.name.findName()
+  },
+  content: faker.lorem.paragraph(),
+  Images: [{
+    src: faker.image.image(),
+  }],
+  Comments: [{
     User: {
       id: shortid.generate(),
       nickname: faker.name.findName()
     },
-    content: faker.lorem.paragraph(),
-    Images: [{
-      src: faker.image.imageUrl(),
-    }],
-    Comments: [{
-      User: {
-        id: shortid.generate(),
-        nickname: faker.name.findName()
-      },
-      content: faker.lorem.sentence(),
-    }]
-  })),
-);
+    content: faker.lorem.sentence(),
+  }]
+}));
 
 const dummyPost = (data) => ({
   id: data.id,
@@ -73,7 +48,7 @@ const dummyPost = (data) => ({
     nickname: faker.name.findName(),
   },
   Images: [{
-    src: faker.image.imageUrl(),
+    src: faker.image.image(),
   }],
   Comments: [{
     User: {
@@ -92,6 +67,10 @@ const dummyComment = (data) => ({
   },
   content: data,
 });
+
+export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
+export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
+export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
@@ -124,6 +103,22 @@ export const addComment = (data) => {
 const reducer = (state = initalState, action) => produce(state, (draft) => {
   // immer가 알아서 불변성을 지켜서 return 해줌
   switch (action.type) {
+    case LOAD_POST_REQUEST: 
+      draft.loadPostLoading = true,
+      draft.loadPostDone = false,
+      draft.loadPostError = null
+      break;
+    case LOAD_POST_SUCCESS:
+      draft.loadPostLoading = false,
+      draft.loadPostDone = true,
+      draft.mainPosts = action.data.concat(draft.mainPosts);
+      // 보여질 게시물을 50개로 한정
+      draft.hasMorePost = draft.mainPosts.length < 50;
+      break;
+    case LOAD_POST_FAILURE: 
+      draft.loadPostLoading = false,
+      draft.loadPostError = action.error
+      break;
     case ADD_POST_REQUEST: 
       draft.addPostLoading = true,
       draft.addPostDone = false,
@@ -132,7 +127,7 @@ const reducer = (state = initalState, action) => produce(state, (draft) => {
     case ADD_POST_SUCCESS:
       draft.addPostLoading = false,
       draft.addPostDone = true,
-      draft.mainPosts.unshift((dummyPost(action.data)))
+      draft.mainPosts.unshift((dummyPost(action.data)));
       break;
     case ADD_POST_FAILURE: 
       draft.addPostLoading = false,
