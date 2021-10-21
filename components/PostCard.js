@@ -6,6 +6,7 @@ import { RetweetOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, Ellipsis
 import PostImages from './PostImages';
 import PostCardContent from './PostCardContent';
 import CommentForm from './CommnetForm';
+import FollowButton from './FollowButton';
 import { REMOVE_POST_REQUEST } from '../reducers/post';
 
 const PostCard = ({ post }) => {
@@ -57,7 +58,9 @@ const PostCard = ({ post }) => {
             )}>
               <EllipsisOutlined />
             </Popover>
-          ]}>
+          ]}
+          extra={id && <FollowButton post={post}/>}
+          >
           <Card.Meta 
             avatar={<Avatar>{post.User.nickname}</Avatar>}
             title={post.User.nickname}

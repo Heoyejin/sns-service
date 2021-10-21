@@ -2,7 +2,9 @@ import { all, fork, put, call, delay, takeLatest } from "@redux-saga/core/effect
 import { 
   LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, 
   LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE, 
-  SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE 
+  SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE,
+  FOLLOW_REQUEST, FOLLOW_SUCCESS, FOLLOW_FAILURE,
+  UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS, UNFOLLOW_FAILURE
 } from "../reducers/user";
 import axios from 'axios';
 
@@ -68,11 +70,52 @@ function* signUp() {
     yield delay(1000);
     yield put({
       type: SIGN_UP_SUCCESS,
+      data: action.data
     });
   } catch (err) {
     yield put({
       type: SIGN_UP_FAILURE,
-      err: err.response.data
+      err: err.response
+    }); 
+  }
+}
+
+function followAPI(data) {
+  return axios.post('/api/follow', data);
+}
+
+function* follow(action) {
+  // const result = yield call(followAPI);
+  try {
+    yield delay(1000);
+    yield put({
+      type: FOLLOW_SUCCESS,
+      data: action.data
+    });
+  } catch (err) {
+    yield put({
+      type: FOLLOW_FAILURE,
+      err: err.response
+    }); 
+  }
+}
+
+function unfollowAPI(data) {
+  return axios.post('/api/unfollow', data);
+}
+
+function* unfollow(action) {
+  // const result = yield call(unfollowAPI);
+  try {
+    yield delay(1000);
+    yield put({
+      type: UNFOLLOW_SUCCESS,
+      data: action.data
+    });
+  } catch (err) {
+    yield put({
+      type: UNFOLLOW_FAILURE,
+      err: err.response
     }); 
   }
 }
@@ -90,15 +133,25 @@ function* watchLogOut() {
   yield takeLatest(LOG_OUT_REQUEST, logOut);
 }
 
-function* watchsignUp() {
+function* watchSignUp() {
   yield takeLatest(SIGN_UP_REQUEST, signUp);
+}
+
+function* watchFollow() {
+  yield takeLatest(FOLLOW_REQUEST, follow);
+}
+
+function* watchUnFollow() {
+  yield takeLatest(UNFOLLOW_REQUEST, unfollow);
 }
 
 export default function* userSaga() {
   yield all([
     // 함수를 실행
+    fork(watchFollow),
+    fork(watchUnFollow),
     fork(watchLogIn),
     fork(watchLogOut),
-    fork(watchsignUp),
+    fork(watchSignUp),
   ])
 }

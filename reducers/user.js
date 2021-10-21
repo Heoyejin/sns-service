@@ -13,6 +13,12 @@ const initalState = {
   changeNicknameLoaging: false,
   changeNicknameDone: false,
   changeNicknameError: false,
+  followLoading: false, // 로그인 시도중
+  followDone: false,
+  followError: null, 
+  unfollowLoading: false, // 로그인 시도중
+  unfollowDone: false,
+  unfollowError: null, 
   me: null, 
   signUpdata: {},
   loginData: {}
@@ -71,65 +77,93 @@ export const logoutRequestAction = () => {
 const reducer = (state = initalState, action) => produce(state, (draft) => {
   switch (action.type) {
     case LOG_IN_REQUEST:
-      draft.logInLoading = true,
-      draft.logInError = null
+      draft.logInLoading = true;
+      draft.logInError = null;
       break;
     case LOG_IN_SUCCESS:
-      draft.logInLoading = false,
-      draft.logInDone = true,
-      draft.me = dummyUser(action.data)
+      draft.logInLoading = false;
+      draft.logInDone = true;
+      draft.me = dummyUser(action.data);
       break;
     case LOG_IN_FAILURE: 
-      draft.logInLoading = false,
-      draft.logInError = action.error
+      draft.logInLoading = false;
+      draft.logInError = action.error;
       break;
     case LOG_OUT_REQUEST: 
-      draft.logOutLoaging = true,
-      draft.logOutDone = false,
-      draft.logOutError = null
+      draft.logOutLoaging = true;
+      draft.logOutDone = false;
+      draft.logOutError = null;
       break;
     case LOG_OUT_SUCCESS: 
-      draft.logOutLoaging = false,
+      draft.logOutLoaging = false;
       draft.logOutDone = true
-      draft.me = null
+      draft.me = null;
       break;
     case LOG_OUT_FAILURE:
-      draft.logOutLoaging = false,
-      draft.logOutError = action.error
+      draft.logOutLoaging = false;
+      draft.logOutError = action.error;
       break;
     case SIGN_UP_REQUEST: 
-      draft.signUpLoaging = true,
-      draft.signUpDone = false,
-      draft.signUpError = null
+      draft.signUpLoaging = true;
+      draft.signUpDone = false;
+      draft.signUpError = null;
       break;
     case SIGN_UP_SUCCESS: 
-      draft.signUpLoaging = false,
-      draft.signUpDone = true,
-      draft.me = null
+      draft.signUpLoaging = false;
+      draft.signUpDone = true;
+      draft.me = null;
       break;
     case SIGN_UP_FAILURE: 
-      draft.signUpLoaging = false,
-      draft.signUpError = action.error
+      draft.signUpLoaging = false;
+      draft.signUpError = action.error;
       break;
     case CHANGE_NICKNAME_REQUEST: 
-      draft.changeNicknameLoaging = true,
-      draft.changeNicknameDone = false,
-      draft.changeNicknameError = null
+      draft.changeNicknameLoaging = true;
+      draft.changeNicknameDone = false;
+      draft.changeNicknameError = null;
       break;
     case CHANGE_NICKNAME_SUCCESS: 
-      draft.changeNicknameLoaging = false,
-      draft.changeNicknameDone = true,
-      draft.me = null
+      draft.changeNicknameLoaging = false;
+      draft.changeNicknameDone = true;
+      draft.me = null;
       break;
     case CHANGE_NICKNAME_FAILURE: 
-      draft.changeNicknameLoaging = false,
-      draft.changeNicknameError = action.error
+      draft.changeNicknameLoaging = false;
+      draft.changeNicknameError = action.error;
+      break;
+    case FOLLOW_REQUEST: 
+      draft.followLoaging = true;
+      draft.followDone = false;
+      draft.followError = null;
+      break;
+    case FOLLOW_SUCCESS: 
+      draft.followLoaging = false;
+      draft.me.Followings.push({ id: action.data });
+      draft.followDone = true;
+      break;
+    case FOLLOW_FAILURE: 
+      draft.followLoaging = false;
+      draft.followError = action.error;
+      break;
+    case UNFOLLOW_REQUEST: 
+      draft.unfollowLoaging = true;
+      draft.unfollowDone = false;
+      draft.unfollowError = null;
+      break;
+    case UNFOLLOW_SUCCESS: 
+      draft.unfollowLoaging = false;
+      draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data);
+      draft.unfollowDone = true;
+      break;
+    case UNFOLLOW_FAILURE: 
+      draft.unfollowLoaging = false;
+      draft.unfollowError = action.error;
       break;
     case ADD_POST_OF_ME:
-      draft.me.Posts.unshift({id: action.data})
+      draft.me.Posts.unshift({id: action.data});
       break;
     case REMOVE_POST_OF_ME:
-      draft.me.Posts = draft.me.Posts.filter((v) => v.id != action.data)
+      draft.me.Posts = draft.me.Posts.filter((v) => v.id != action.data);
       break;
     default:
       break;
