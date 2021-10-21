@@ -1,36 +1,33 @@
 import shortid from 'shortid';
 import produce from 'immer';
+import faker from 'faker';
 
 export const initalState = {
   mainPosts: [{
     id: shortid.generate(),
     User: {
       id: shortid.generate(),
-      nickname: '호예진',
+      nickname: faker.name.findName()
     },
-    content: '첫 번째 게시글 #또치 #고양이',
+    content: faker.lorem.paragraph(),
     Images: [{
       id: shortid.generate(),
-      src: 'https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726',
-    }, {
-      id: shortid.generate(),
-      src: 'https://gimg.gilbut.co.kr/book/BN001958/rn_view_BN001958.jpg',
-    }, {
-      id: shortid.generate(),
-      src: 'https://gimg.gilbut.co.kr/book/BN001998/rn_view_BN001998.jpg',
+      src: faker.image.imageUrl(),
     }],
     Comments: [{
       id: shortid.generate(),
       User: {
-        nickname: 'dooch___u',
+        id: shortid.generate(),
+        nickname: faker.name.findName()
       },
-      content: '또치 너무 귀여워요',
+      content: faker.lorem.sentence(),
     }, {
       id: shortid.generate(),
       User: {
-        nickname: 'dooch___u',
+        id: shortid.generate(),
+        nickname: faker.name.findName()
       },
-      content: '또치 넘넘 이뽀요',
+      content: faker.lorem.sentence(),
     }]
   }],
   imagePaths: [], // 이미지 업로드 경로
@@ -45,24 +42,55 @@ export const initalState = {
   addCommentError: null,
 };
 
+// 더미 데이터 만들기 
+// https://www.npmjs.com/package/faker
+initalState.mainPosts = initalState.mainPosts.concat(
+  Array(20).fill().map((v, i) => ({
+    id: shortid.generate(),
+    User: {
+      id: shortid.generate(),
+      nickname: faker.name.findName()
+    },
+    content: faker.lorem.paragraph(),
+    Images: [{
+      src: faker.image.imageUrl(),
+    }],
+    Comments: [{
+      User: {
+        id: shortid.generate(),
+        nickname: faker.name.findName()
+      },
+      content: faker.lorem.sentence(),
+    }]
+  })),
+);
+
 const dummyPost = (data) => ({
   id: data.id,
   content: data.content,
   User: {
-    id: 1,
-    nickname: '호예진',
+    id: shortid.generate(),
+    nickname: faker.name.findName(),
   },
-  Images: [],
-  Comments: [],
+  Images: [{
+    src: faker.image.imageUrl(),
+  }],
+  Comments: [{
+    User: {
+      id: shortid.generate(),
+      nickname: faker.name.findName()
+    },
+    content: faker.lorem.sentence(),
+  }],
 });
 
 const dummyComment = (data) => ({
   id: shortid.generate(),
-  content: data,
   User: {
-    id: 1,
-    nickname: '제로초',
+    id: shortid.generate(),
+    nickname: faker.name.findName()
   },
+  content: data,
 });
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
@@ -91,6 +119,8 @@ export const addComment = (data) => {
   }
 };
 
+// redux-toolkit - reducer 코드 줄이는데 유용함
+// https://redux-toolkit.js.org/
 const reducer = (state = initalState, action) => produce(state, (draft) => {
   // immer가 알아서 불변성을 지켜서 return 해줌
   switch (action.type) {
