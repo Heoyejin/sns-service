@@ -1,7 +1,10 @@
 const express = require('express');
 const postRouter = require('./routes/post');
+const userRouter = require('./routes/user');
 const db = require('./models');
 
+
+var cors = require('cors');
 const app = express();
 db.sequelize.sync()
   .then(() => {
@@ -9,6 +12,13 @@ db.sequelize.sync()
   })
   .catch(console.error);
 
+app.use(cors({
+  origin: '*',
+}));
+// 미들웨어는 순차적으로 실행되기 때문에 먼저 수행해줘야하는 것은 위에 선언하기
+// front에서 받아온 json데이터를 encoding해주는 로직
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
   res.send('hello express');
 });
@@ -27,6 +37,7 @@ app.get('/posts', (req, res) => {
 
 // 첫번째 인자는 prefix!!
 app.use('/post', postRouter);
+app.use('/user', userRouter);
 
 app.listen(3065, () => {
   console.log('서버 실행중..!');

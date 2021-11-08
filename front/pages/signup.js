@@ -1,11 +1,12 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Checkbox, Form, Input, Button } from 'antd';
 import Head from 'next/head';
 import AppLayout from '../components/AppLayout';
 import useInput from '../components/hooks/useInput';
 import styled from 'styled-components'
 import { SIGN_UP_REQUEST } from '../reducers/user';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Router from 'next/router';
 
 const ErrorMessage = styled.div`
   color: 'red'
@@ -13,7 +14,25 @@ const ErrorMessage = styled.div`
 
 const SignUp = () => {
   const dispatch = useDispatch();
-  const { signUpLoaging } = userSelector((state) => state.user);
+  const { signUpLoaging, signUpDone, signUpError, me } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (me && me.id) {
+      Router.replace('/');
+    }
+  }, [me]);
+
+  useEffect(() => {
+    if (signUpDone) {
+      Router.replace('/');
+    }
+  },[signUpDone]);
+
+  useEffect(() => {
+    if (signUpError) {
+      alert(signUpError);
+    }
+  },[signUpError]);
 
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
@@ -65,7 +84,12 @@ const SignUp = () => {
         <div>
           <label htmlFor="user-password">비밀번호</label>
           <br />
-          <Input name="user-password" value={password} required onChange={onChangePassWordCheck}></Input>
+          <Input type={ password } name="user-nickname" value={password} required onChange={onChangePassword}></Input>
+        </div>
+        <div>
+          <label htmlFor="user-password-check">비밀번호 확인</label>
+          <br />
+          <Input type={ password } name="user-password" value={passwordCheck} required onChange={onChangePassWordCheck}></Input>
           {passwordError && <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>}
         </div>
         <div>
