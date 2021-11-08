@@ -11,21 +11,20 @@ import axios from 'axios';
 /****** LogIn ******/
 // 서버에 실제 Login 요청을 보내는 함수
 function logInAPI(data) {
-  return axios.post('/api/login', data);
+  return axios.post('/user/login', data);
 }
 
 function* logIn(action) {
-  console.log('sagas-user-login');
   try {
     // 서버 요청 결과를 받아서 success/failure 로 Action을 나눠 주는 구간
     // put - dispatch와 비슷한 역할을 하는 effects라고 생각 하면 됨
     // call - 비동기 함수 호출, fork - 동기 함수 호출
     // yield를 붙여주는 이유는 
-    // const result = yield call(logInAPI, action.data);
+    const result = yield call(logInAPI, action.data);
     yield delay(1000);
     yield put({
       type: LOG_IN_SUCCESS,
-      data: action.data
+      data: result.data
     });
   } catch (err) {
     console.log('sagas-user-err', err);
