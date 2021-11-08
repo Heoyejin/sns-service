@@ -6,10 +6,14 @@ const db = require('./models');
 
 const passport = require('passport');
 const passportConfig = require('./passport');
+const dotenv = require('dotenv');
 
 var cors = require('cors');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+
+// 보안을 위해 .env 설정하기
+dotenv.config();
 
 const app = express();
 
