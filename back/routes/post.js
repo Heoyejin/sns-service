@@ -1,8 +1,10 @@
 const express = require('express');
 
 const { Post, Comment } = require('../models');
+const { isLoggedIn } = require('./middlewares');
+
 const router = express.Router();
-router.post('/', async (req, res, next) => {        //Post /post
+router.post('/', isLoggedIn, async (req, res, next) => {        //Post /post
   try {
     const post = await Post.create({
       content: req.body.content,
@@ -14,7 +16,8 @@ router.post('/', async (req, res, next) => {        //Post /post
     next(error);
   }
 });
-router.post(':postId/comment/', async (req, res, next) => {        //Post /post/1/comment
+
+router.post(':postId/comment/', isLoggedIn, async (req, res, next) => {        //Post /post/1/comment
   try {
     const post = await Post.findOne({
       where: { id: req.params.postId },
