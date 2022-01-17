@@ -34,7 +34,11 @@ function* loadPost(action) {
 }
 
 function addPostAPI(data) {
-  return axios.post('/post', { content: data });
+  return axios.post('/post', { content: data }, 
+  // {
+  //   withCredentials: true,  // 서버와의 쿠키 전달을 위한 설정
+  // }
+  );
 }
 
 function* addPost(action) {

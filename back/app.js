@@ -26,8 +26,11 @@ db.sequelize.sync()
 // passport 실행
 passportConfig();
 
+// 브라우저와 서버의 도메인이 다르기 때문에 cors모듈을 이용하여 허용해줘야함.
+// AccessControl
 app.use(cors({
-  origin: '*',
+  origin: 'http://localhost:3033',
+  credentials: true,
 }));
 // 미들웨어는 순차적으로 실행되기 때문에 먼저 수행해줘야하는 것은 위에 선언하기
 // front에서 받아온 json데이터를 encoding해주는 로직
