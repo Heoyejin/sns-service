@@ -33,8 +33,8 @@ function* loadPost(action) {
   }
 }
 
-function addPostAPI() {
-  return axios.post('/api/addpost');
+function addPostAPI(data) {
+  return axios.post('/post', { content: data });
 }
 
 function* addPost(action) {
@@ -42,19 +42,19 @@ function* addPost(action) {
     // 서버 요청 결과를 받아서 success/failure 로 Action을 나눠 주는 구간
     // put - dispatch와 비슷한 역할을 하는 effects라고 생각 하면 됨
     // call - 비동기 함수 호출, fork - 동기 함수 호출
-    // const result = yield call(addPostAPI, action.data);
-    yield delay(1000);
+    const result = yield call(addPostAPI, action.data);
+    // yield delay(1000);
     const id = shortid.generate();
     yield put({
       type: ADD_POST_SUCCESS,
       data: {
         id,
-        content: action.data
+        content: result.data
       }
     });
     yield put({
       type: ADD_POST_OF_ME,
-      data: id
+      data: result.data.id
     });
   } catch (err) {
     yield put({

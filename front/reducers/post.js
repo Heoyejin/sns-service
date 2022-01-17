@@ -40,25 +40,6 @@ export const generateDummyPost = (number) => Array(number).fill().map(() => ({
   }]
 }));
 
-const dummyPost = (data) => ({
-  id: data.id,
-  content: data.content,
-  User: {
-    id: shortid.generate(),
-    nickname: faker.name.findName(),
-  },
-  Images: [{
-    src: faker.image.image(),
-  }],
-  Comments: [{
-    User: {
-      id: shortid.generate(),
-      nickname: faker.name.findName()
-    },
-    content: faker.lorem.sentence(),
-  }],
-});
-
 const dummyComment = (data) => ({
   id: shortid.generate(),
   User: {
@@ -127,7 +108,7 @@ const reducer = (state = initalState, action) => produce(state, (draft) => {
     case ADD_POST_SUCCESS:
       draft.addPostLoading = false,
       draft.addPostDone = true,
-      draft.mainPosts.unshift((dummyPost(action.data)));
+      draft.mainPosts.unshift(action.data);
       break;
     case ADD_POST_FAILURE: 
       draft.addPostLoading = false,
