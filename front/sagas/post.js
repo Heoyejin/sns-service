@@ -47,7 +47,6 @@ function* addPost(action) {
     // put - dispatch와 비슷한 역할을 하는 effects라고 생각 하면 됨
     // call - 비동기 함수 호출, fork - 동기 함수 호출
     const result = yield call(addPostAPI, action.data);
-    // yield delay(1000);
     const id = shortid.generate();
     yield put({
       type: ADD_POST_SUCCESS,
@@ -117,7 +116,6 @@ function* removePost(action) {
 }
 
 function* watchLoadPost() {
-  // yield throttle(ADD_POST_REQUEST, addPost, 10000);
   yield takeLatest(LOAD_POST_REQUEST, loadPost);
 }
 
