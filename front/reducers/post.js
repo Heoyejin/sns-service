@@ -40,15 +40,6 @@ export const generateDummyPost = (number) => Array(number).fill().map(() => ({
   }]
 }));
 
-const dummyComment = (data) => ({
-  id: shortid.generate(),
-  User: {
-    id: shortid.generate(),
-    nickname: faker.name.findName()
-  },
-  content: data,
-});
-
 export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
 export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
 export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
@@ -121,8 +112,8 @@ const reducer = (state = initalState, action) => produce(state, (draft) => {
       break;
     case ADD_COMMENT_SUCCESS:
       // 불변성 하나 지키려고 구현한 로직이 너무 복잡함
-      const post = draft.mainPosts.find((v) => v.id === action.data.postId);
-      post.Comments.unshift(dummyComment(action.data.content));
+      const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+      post.Comments.unshift(action.data.content);
       draft.addCommentLoading = false,
       draft.addCommentDone = true
       break;
