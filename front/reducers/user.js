@@ -13,10 +13,10 @@ const initalState = {
   changeNicknameLoaging: false,
   changeNicknameDone: false,
   changeNicknameError: false,
-  followLoading: false, // 로그인 시도중
+  followLoading: false,
   followDone: false,
   followError: null, 
-  unfollowLoading: false, // 로그인 시도중
+  unfollowLoading: false,
   unfollowDone: false,
   unfollowError: null, 
   me: null, 
@@ -54,15 +54,6 @@ export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
 
 export const ADD_POST_OF_ME = 'ADD_POST_OF_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
-
-const dummyUser = (data) => ({
-  ...data,
-  nickname: '호예진',
-  id: 1,
-  Posts: [{ id: 1 }],
-  Followings: [{ nickname: '또치' }, { nickname: 'ddochee__u' }, { nickname: 'uzinee' }],
-  Followers: [{ nickname: '또치' }, { nickname: 'ddochee__u' }, { nickname: 'uzinee' }],
-});
 
 export const loginRequestAction = (data) => {
   return {
@@ -149,31 +140,31 @@ const reducer = (state = initalState, action) => produce(state, (draft) => {
       draft.changeNicknameError = action.error;
       break;
     case FOLLOW_REQUEST: 
-      draft.followLoaging = true;
+      draft.followLoading = true;
       draft.followDone = false;
       draft.followError = null;
       break;
     case FOLLOW_SUCCESS: 
-      draft.followLoaging = false;
-      draft.me.Followings.push({ id: action.data });
+      draft.followLoading = false;
+      draft.me.Followings.push({ id: action.data.UserId });
       draft.followDone = true;
       break;
     case FOLLOW_FAILURE: 
-      draft.followLoaging = false;
+      draft.followLoading = false;
       draft.followError = action.error;
       break;
     case UNFOLLOW_REQUEST: 
-      draft.unfollowLoaging = true;
+      draft.unfollowLoading = true;
       draft.unfollowDone = false;
       draft.unfollowError = null;
       break;
     case UNFOLLOW_SUCCESS: 
-      draft.unfollowLoaging = false;
-      draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data);
+      draft.unfollowLoading = false;
+      draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data.UserId);
       draft.unfollowDone = true;
       break;
     case UNFOLLOW_FAILURE: 
-      draft.unfollowLoaging = false;
+      draft.unfollowLoading = false;
       draft.unfollowError = action.error;
       break;
     case ADD_POST_OF_ME:

@@ -117,16 +117,15 @@ function* changeNickname(action) {
 }
 
 function followAPI(data) {
-  return axios.post('/api/follow', data);
+  return axios.patch(`/user/${data}/follow`);
 }
 
 function* follow(action) {
-  // const result = yield call(followAPI);
+  const result = yield call(followAPI, action.data);
   try {
-    yield delay(1000);
     yield put({
       type: FOLLOW_SUCCESS,
-      data: action.data
+      data: result.data
     });
   } catch (err) {
     yield put({
@@ -137,16 +136,15 @@ function* follow(action) {
 }
 
 function unfollowAPI(data) {
-  return axios.post('/api/unfollow', data);
+  return axios.delete(`/user/${data}/follow`);
 }
 
 function* unfollow(action) {
-  // const result = yield call(unfollowAPI);
+  const result = yield call(unfollowAPI, action.data);
   try {
-    yield delay(1000);
     yield put({
       type: UNFOLLOW_SUCCESS,
-      data: action.data
+      data: result.data
     });
   } catch (err) {
     yield put({
