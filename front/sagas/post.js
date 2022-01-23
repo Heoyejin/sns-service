@@ -5,6 +5,8 @@ import {
   ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE,
   ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE, 
   REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, REMOVE_POST_FAILURE,
+  LIKE_POST_REQUEST, LIKE_POST_SUCCESS, LIKE_POST_FAILURE,
+  UNLIKE_POST_REQUEST, UNLIKE_POST_SUCCESS, UNLIKE_POST_FAILURE,
 } from '../reducers/post';
 import { ADD_POST_OF_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
@@ -85,27 +87,41 @@ function* addComment(action) {
   }
 } 
 
-function removePostAPI() {
-  return axios.post('/api/addcomment');
+function likePostAPI(data) {
+  return axios.patch(`/post/${data}/like`);
 }
 
-function* removePost(action) {
+function* likePost(action) {
   try {
-    console.log('action', action.data);
-    // const result = yield call(removePostAPI, action.data);
-    yield delay(1000);
+    const result = yield call(likePostAPI, action.data);
     yield put({
-      type: REMOVE_POST_SUCCESS,
-      data: action.data,
-    });
-    yield put({
-      type: REMOVE_POST_OF_ME,
-      data: action.data,
+      type: LIKE_POST_SUCCESS,
+      data: result.data,
     });
   } catch (err) {
     console.error(err);
     yield put({
-      type: REMOVE_POST_FAILURE,
+      type: LIKE_POST_FAILURE,
+      data: err.response,
+    });
+  }
+}
+
+function unlikePostAPI(data) {
+  return axios.delete(`/post/${data}/like`);
+}
+
+function* unlikePost(action) {
+  try {
+    const result = yield call(unlikePostAPI, action.data);
+    yield put({
+      type: UNLIKE_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: UNLIKE_POST_FAILURE,
       data: err.response,
     });
   }
@@ -123,6 +139,14 @@ function* watchRemovePost() {
   yield takeLatest(REMOVE_POST_REQUEST, removePost);
 }
 
+function* watchLikePost() {
+  yield takeLatest(LIKE_POST_REQUEST, likePost);
+}
+
+function* watchUnLikePost() {
+  yield takeLatest(UNLIKE_POST_REQUEST, unlikePost);
+}
+
 function* watchAddComment() {
   yield takeLatest(ADD_COMMENT_REQUEST, addComment);
 }
@@ -132,6 +156,8 @@ export default function* postSaga (){
   yield all([
     fork(watchLoadPost),
     fork(watchAddPost),
+    fork(watchLikePost),
+    fork(watchUnLikePost),
     fork(watchAddComment),
     fork(watchRemovePost),
   ])
