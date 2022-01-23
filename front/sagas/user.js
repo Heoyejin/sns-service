@@ -128,10 +128,8 @@ function* signUp(action) {
   const result = yield call(signUpAPI, action.data);
   console.log("signUp Result", result);
   try {
-    yield delay(1000);
     yield put({
       type: SIGN_UP_SUCCESS,
-      data: action.data
     });
   } catch (err) {
     yield put({
