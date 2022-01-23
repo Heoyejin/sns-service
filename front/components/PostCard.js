@@ -96,10 +96,10 @@ const PostCard = ({ post }) => {
 PostCard.propTypes= {
   // object props 는 shape를 이용해서 구체적으로 정의가능
   post: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.number,
     User: PropTypes.object,
     content: PropTypes.string,
-    createAt: PropTypes.object,
+    createAt: PropTypes.string,
     Comments: PropTypes.arrayOf(PropTypes.object),
     Images: PropTypes.arrayOf(PropTypes.object)
 

@@ -5,13 +5,12 @@ import {
   ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE,
   ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE, 
   REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, REMOVE_POST_FAILURE,
-  generateDummyPost
 } from '../reducers/post';
 import { ADD_POST_OF_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 import shortid from 'shortid';
 
-function loadPostAPI() {
-  return axios.post('/api/loadpost');
+function loadPostAPI(data) {
+  return axios.get('/posts', data);
 }
 
 function* loadPost(action) {
@@ -19,13 +18,14 @@ function* loadPost(action) {
     // 서버 요청 결과를 받아서 success/failure 로 Action을 나눠 주는 구간
     // put - dispatch와 비슷한 역할을 하는 effects라고 생각 하면 됨
     // call - 비동기 함수 호출, fork - 동기 함수 호출
-    // const result = yield call(addPostAPI, action.data);
+    const result = yield call(loadPostAPI, action.data);
     yield delay(1000);
     yield put({
       type: LOAD_POST_SUCCESS,
-      data: generateDummyPost(10),
+      data: result.data,
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: LOAD_POST_FAILURE,
       data: err.response
@@ -82,6 +82,7 @@ function* addComment(action) {
       data: result.data
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: ADD_COMMENT_FAILURE,
       data: err.response

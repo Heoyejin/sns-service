@@ -1,5 +1,6 @@
 const express = require('express');
 const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
 const userRouter = require('./routes/user');
 
 const db = require('./models');
@@ -56,16 +57,9 @@ app.get('/', (req, res) => {
   res.send('hello api');
 });
 
-app.get('/posts', (req, res) => {
-  res.json([
-    { id: 1, content: 'ddochee__u1' },
-    { id: 2, content: 'ddochee__u2' },
-    { id: 3, content: 'ddochee__u3' },
-  ])
-});
-
 // 첫번째 인자는 prefix!!
 app.use('/post', postRouter);
+app.use('/posts', postsRouter);
 app.use('/user', userRouter);
 
 app.listen(3065, () => {

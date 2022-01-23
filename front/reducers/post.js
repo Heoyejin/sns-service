@@ -20,26 +20,6 @@ export const initalState = {
   addCommentError: null,
 };
 
-// 게시물 데이터를 더미데이터가 아니라 서버에서 10개씩 받아오는 로직 구현
-export const generateDummyPost = (number) => Array(number).fill().map(() => ({
-  id: shortid.generate(),
-  User: {
-    id: shortid.generate(),
-    nickname: faker.name.findName()
-  },
-  content: faker.lorem.paragraph(),
-  Images: [{
-    src: faker.image.image(),
-  }],
-  Comments: [{
-    User: {
-      id: shortid.generate(),
-      nickname: faker.name.findName()
-    },
-    content: faker.lorem.sentence(),
-  }]
-}));
-
 export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
 export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
 export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
