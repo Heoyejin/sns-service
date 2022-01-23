@@ -6,7 +6,9 @@ import {
   SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE,
   CHANGE_NICKNAME_REQUEST, CHANGE_NICKNAME_SUCCESS, CHANGE_NICKNAME_FAILURE,
   FOLLOW_REQUEST, FOLLOW_SUCCESS, FOLLOW_FAILURE,
-  UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS, UNFOLLOW_FAILURE
+  UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS, UNFOLLOW_FAILURE,
+  LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWERS_SUCCESS, LOAD_FOLLOWERS_FAILURE,
+  LOAD_FOLLOWINGS_REQUEST, LOAD_FOLLOWINGS_SUCCESS, LOAD_FOLLOWINGS_FAILURE,
 } from "../reducers/user";
 import axios from 'axios';
 
@@ -29,6 +31,47 @@ function* loadUser(action) {
     }); 
   }
 }
+
+function loadFollowersAPI(data) {
+  return axios.get('/user/followers', data);
+}
+
+function* loadFollowers(action) {
+  try {
+    const result = yield call(loadFollowersAPI, action.data);
+    yield put({
+      type: LOAD_FOLLOWERS_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_FOLLOWERS_FAILURE,
+      error: err.response.data
+    }); 
+  }
+}
+
+function loadFollowingsAPI(data) {
+  return axios.get('/user/followings', data);
+}
+
+function* loadFollowings(action) {
+  try {
+    const result = yield call(loadFollowingsAPI, action.data);
+    yield put({
+      type: LOAD_FOLLOWINGS_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_FOLLOWINGS_FAILURE,
+      error: err.response.data
+    }); 
+  }
+}
+
 
 /****** LogIn ******/
 // 서버에 실제 Login 요청을 보내는 함수
@@ -158,6 +201,14 @@ function* watchLoadUser() {
   yield takeLatest(LOAD_MY_INFO_REQUEST, loadUser);
 }
 
+function* watchLoadFollowings() {
+  yield takeLatest(LOAD_FOLLOWINGS_REQUEST, loadFollowings);
+}
+
+function* watchLoadFollowers() {
+  yield takeLatest(LOAD_FOLLOWERS_REQUEST, loadFollowers);
+}
+
 // 이벤트 리스너 같은 느낌인데 재사용을 못함
 // 그래서 while문으로 계속 재사용 할수 있게 해줘야하는데 직관적이지 않기 때문에 takeEvery 사용
 function* watchLogIn() {
@@ -191,6 +242,8 @@ export default function* userSaga() {
   yield all([
     // 함수를 실행
     fork(watchLoadUser),
+    fork(watchLoadFollowings),
+    fork(watchLoadFollowers),
     fork(watchFollow),
     fork(watchUnFollow),
     fork(watchLogIn),
