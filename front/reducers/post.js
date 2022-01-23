@@ -134,13 +134,14 @@ const reducer = (state = initalState, action) => produce(state, (draft) => {
       draft.addCommentDone = false,
       draft.addCommentError = null
       break;
-    case ADD_COMMENT_SUCCESS:
+    case ADD_COMMENT_SUCCESS: {
       // 불변성 하나 지키려고 구현한 로직이 너무 복잡함
       const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
       post.Comments.unshift(action.data);
       draft.addCommentLoading = false,
       draft.addCommentDone = true
       break;
+    }
     case ADD_COMMENT_FAILURE:
       draft.addCommentLoading = false,
       draft.addCommentError = action.error

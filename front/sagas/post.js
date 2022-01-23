@@ -64,28 +64,29 @@ function* addPost(action) {
   }
 }
 
-function addCommentAPI(data) {
-  return axios.post(`/post/${data.postId}/comment`, data);  // POST /post/1/comment
+function removePostAPI(data) {
+  return axios.delete(`/post/${data}`);
 }
 
-function* addComment(action) {
+function* removePost(action) {
   try {
-    // 서버 요청 결과를 받아서 success/failure 로 Action을 나눠 주는 구간
-    // put - dispatch와 비슷한 역할을 하는 effects라고 생각 하면 됨
-    // call - 비동기 함수 호출, fork - 동기 함수 호출
-    const result = yield call(addCommentAPI, action.data);
+    const result = yield call(removePostAPI, action.data);
     yield put({
-      type: ADD_COMMENT_SUCCESS,
-      data: result.data
+      type: REMOVE_POST_SUCCESS,
+      data: result.data,
+    });
+    yield put({
+      type: REMOVE_POST_OF_ME,
+      data: action.data,
     });
   } catch (err) {
     console.error(err);
     yield put({
-      type: ADD_COMMENT_FAILURE,
-      data: err.response
-    }); 
+      type: REMOVE_POST_FAILURE,
+      data: err.response,
+    });
   }
-} 
+}
 
 function likePostAPI(data) {
   return axios.patch(`/post/${data}/like`);
@@ -124,6 +125,29 @@ function* unlikePost(action) {
       type: UNLIKE_POST_FAILURE,
       data: err.response,
     });
+  }
+}
+
+function addCommentAPI(data) {
+  return axios.post(`/post/${data.postId}/comment`, data);  // POST /post/1/comment
+}
+
+function* addComment(action) {
+  try {
+    // 서버 요청 결과를 받아서 success/failure 로 Action을 나눠 주는 구간
+    // put - dispatch와 비슷한 역할을 하는 effects라고 생각 하면 됨
+    // call - 비동기 함수 호출, fork - 동기 함수 호출
+    const result = yield call(addCommentAPI, action.data);
+    yield put({
+      type: ADD_COMMENT_SUCCESS,
+      data: result.data
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: ADD_COMMENT_FAILURE,
+      data: err.response
+    }); 
   }
 }
 
