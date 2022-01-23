@@ -4,6 +4,7 @@ import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
 import { LOAD_POST_REQUEST } from '../reducers/post';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 
 // 각 페이지(index.js)의 return 부분이 _app.js의 Component에 들어간다.
 const Home = () => {
@@ -11,6 +12,9 @@ const Home = () => {
   const { mainPosts, hasMorePost, loadPostLoading } = useSelector((state) => state.post);
 
   useEffect(() => {
+    dispatch({
+      type: LOAD_MY_INFO_REQUEST,
+    })
     dispatch({
       type: LOAD_POST_REQUEST,
     });

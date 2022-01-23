@@ -1,5 +1,6 @@
 import { all, fork, put, call, delay, takeLatest } from "@redux-saga/core/effects";
 import { 
+  LOAD_MY_INFO_REQUEST, LOAD_MY_INFO_SUCCESS, LOAD_MY_INFO_FAILURE, 
   LOG_IN_REQUEST, LOG_IN_SUCCESS, LOG_IN_FAILURE, 
   LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE, 
   SIGN_UP_REQUEST, SIGN_UP_SUCCESS, SIGN_UP_FAILURE,
@@ -7,6 +8,26 @@ import {
   UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS, UNFOLLOW_FAILURE
 } from "../reducers/user";
 import axios from 'axios';
+
+function loadUserAPI() {
+  return axios.get('/user');
+}
+
+function* loadUser(action) {
+  try {
+    const result = yield call(loadUserAPI, action.data);
+    yield put({
+      type: LOAD_MY_INFO_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_MY_INFO_FAILURE,
+      error: err.response.data
+    }); 
+  }
+}
 
 /****** LogIn ******/
 // 서버에 실제 Login 요청을 보내는 함수
@@ -120,6 +141,10 @@ function* unfollow(action) {
   }
 }
 
+function* watchLoadUser() {
+  yield takeLatest(LOAD_MY_INFO_REQUEST, loadUser);
+}
+
 // 이벤트 리스너 같은 느낌인데 재사용을 못함
 // 그래서 while문으로 계속 재사용 할수 있게 해줘야하는데 직관적이지 않기 때문에 takeEvery 사용
 function* watchLogIn() {
@@ -148,6 +173,7 @@ function* watchUnFollow() {
 export default function* userSaga() {
   yield all([
     // 함수를 실행
+    fork(watchLoadUser),
     fork(watchFollow),
     fork(watchUnFollow),
     fork(watchLogIn),
