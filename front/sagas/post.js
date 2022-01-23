@@ -7,7 +7,6 @@ import {
   REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, REMOVE_POST_FAILURE,
 } from '../reducers/post';
 import { ADD_POST_OF_ME, REMOVE_POST_OF_ME } from '../reducers/user';
-import shortid from 'shortid';
 
 function loadPostAPI(data) {
   return axios.get('/posts', data);
@@ -47,13 +46,9 @@ function* addPost(action) {
     // put - dispatch와 비슷한 역할을 하는 effects라고 생각 하면 됨
     // call - 비동기 함수 호출, fork - 동기 함수 호출
     const result = yield call(addPostAPI, action.data);
-    const id = shortid.generate();
     yield put({
       type: ADD_POST_SUCCESS,
-      data: {
-        id,
-        content: result.data
-      }
+      data: result.data
     });
     yield put({
       type: ADD_POST_OF_ME,
