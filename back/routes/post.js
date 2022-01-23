@@ -16,8 +16,13 @@ router.post('/', isLoggedIn, async (req, res, next) => {        //Post /post
         model: Image,
       }, {
         model: Comment,
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname'],
+        }]
       }, {
         model: User,
+        attributes: ['id', 'nickname'],
       }]
     });
     res.status(201).json(fullPost);
@@ -27,7 +32,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {        //Post /post
   }
 });
 
-router.post(':postId/comment/', isLoggedIn, async (req, res, next) => {        //Post /post/1/comment
+router.post('/:postId/comment/', isLoggedIn, async (req, res, next) => {        //Post /post/1/comment
   try {
     const post = await Post.findOne({
       where: { id: req.params.postId },
@@ -38,9 +43,17 @@ router.post(':postId/comment/', isLoggedIn, async (req, res, next) => {        /
     const comment = await Comment.create({
       content: req.body.content,
       UserId: req.user.id,
-      PostId: req.params.postId
+      PostId: parseInt(req.params.postId, 10),
     });
-    res.status(201).json(comment);
+    const fullComment = await Comment.findOne({
+      where: { id: comment.id },
+      include:[{
+        model: User,
+        attributes: ['id', 'nickname'],
+      }]
+    });
+    console.log(fullComment);
+    res.status(201).json(fullComment);
   } catch (error) {
     console.error(error);
     next(error);
