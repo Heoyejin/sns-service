@@ -25,6 +25,9 @@ const initalState = {
   loadUnfollowLoading: false,
   loadUnfollowDone: false,
   loadUnfollowError: null,
+  removeFollowerLoading: false,
+  removeFollowerDone: false,
+  removeFollowerError: null,
   me: null, 
   signUpdata: {},
   loginData: {}
@@ -41,6 +44,11 @@ export const LOAD_FOLLOWINGS_FAILURE = 'LOAD_FOLLOWINGS_FAILURE';
 export const LOAD_FOLLOWERS_REQUEST = 'LOAD_FOLLOWERS_REQUEST';
 export const LOAD_FOLLOWERS_SUCCESS = 'LOAD_FOLLOWERS_SUCCESS';
 export const LOAD_FOLLOWERS_FAILURE = 'LOAD_FOLLOWERS_FAILURE';
+
+export const REMOVE_FOLLOWER_REQUEST = 'REMOVE_FOLLOWER_REQUEST';
+export const REMOVE_FOLLOWER_SUCCESS = 'REMOVE_FOLLOWER_SUCCESS';
+export const REMOVE_FOLLOWER_FAILURE = 'REMOVE_FOLLOWER_FAILURE';
+
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
 export const LOG_IN_FAILURE = 'LOG_IN_FAILURE';
@@ -124,6 +132,20 @@ const reducer = (state = initalState, action) => produce(state, (draft) => {
     case LOAD_FOLLOWERS_FAILURE: 
       draft.loadFollowersLoading = false;
       draft.loadFollowersError = action.error;
+      break;
+    case REMOVE_FOLLOWER_REQUEST: 
+      draft.removeFollowerLoading = true;
+      draft.removeFollowerError = null;
+      draft.removeFollowerDone = false;
+      break;
+    case REMOVE_FOLLOWER_SUCCESS: 
+      draft.removeFollowerLoading = false;
+      draft.me.Followers = draft.me.Followers.filter((v) => v.id !== action.data.UserId);
+      draft.removeFollowerDone = true;
+      break;
+    case REMOVE_FOLLOWER_FAILURE: 
+      draft.removeFollowerLoading = false;
+      draft.removeFollowerError = action.error;
       break;
     case LOG_IN_REQUEST:
       draft.logInLoading = true;

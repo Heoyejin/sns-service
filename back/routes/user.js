@@ -159,6 +159,20 @@ router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => { // DELE
   }
 });
 
+router.delete('/follower/:userId', isLoggedIn, async (req, res, next) => { // DELETE /user/follower/1
+  try {
+    const user = await User.findOne({ where: { id: req.params.userId }});
+    if (!user) {
+      res.status(403).send('가입하지 않은 회원입니다.');
+    }
+    await user.removeFollowing(req.user.id);
+    res.status(200).json({ UserId: parseInt(req.params.userId, 10) });s
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 /* 팔로우 목록 불러오기 */ 
 router.get('/followers', isLoggedIn, async (req, res, next) => { // DELETE /user/1/follow
   try {
@@ -187,4 +201,5 @@ router.get('/followings', isLoggedIn, async (req, res, next) => { // DELETE /use
     next(error);
   }
 });
+
 module.exports = router;

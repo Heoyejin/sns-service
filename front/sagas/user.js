@@ -9,6 +9,7 @@ import {
   UNFOLLOW_REQUEST, UNFOLLOW_SUCCESS, UNFOLLOW_FAILURE,
   LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWERS_SUCCESS, LOAD_FOLLOWERS_FAILURE,
   LOAD_FOLLOWINGS_REQUEST, LOAD_FOLLOWINGS_SUCCESS, LOAD_FOLLOWINGS_FAILURE,
+  REMOVE_FOLLOWER_REQUEST, REMOVE_FOLLOWER_SUCCESS, REMOVE_FOLLOWER_FAILURE,
 } from "../reducers/user";
 import axios from 'axios';
 
@@ -197,6 +198,25 @@ function* unfollow(action) {
   }
 }
 
+function removeFollowerAPI(data) {
+  return axios.delete(`/user/follower/${data}`);
+}
+
+function* removeFollower(action) {
+  const result = yield call(removeFollowerAPI, action.data);
+  try {
+    yield put({
+      type: REMOVE_FOLLOWER_SUCCESS,
+      data: result.data
+    });
+  } catch (err) {
+    yield put({
+      type: REMOVE_FOLLOWER_FAILURE,
+      err: err.response
+    }); 
+  }
+}
+
 function* watchLoadUser() {
   yield takeLatest(LOAD_MY_INFO_REQUEST, loadUser);
 }
@@ -238,12 +258,17 @@ function* watchUnFollow() {
   yield takeLatest(UNFOLLOW_REQUEST, unfollow);
 }
 
+function* watchRemoveFollower() {
+  yield takeLatest(REMOVE_FOLLOWER_REQUEST, removeFollower);
+}
+
 export default function* userSaga() {
   yield all([
     // 함수를 실행
     fork(watchLoadUser),
     fork(watchLoadFollowings),
     fork(watchLoadFollowers),
+    fork(watchRemoveFollower),
     fork(watchFollow),
     fork(watchUnFollow),
     fork(watchLogIn),
