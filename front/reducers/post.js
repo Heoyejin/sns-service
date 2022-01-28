@@ -7,6 +7,9 @@ export const initalState = {
   loadPostLoading: false,
   loadPostDone: false,
   loadPostError: null,
+  uploadImagesLoading: false,
+  uploadImagesDone: false,
+  uploadImagesError: null,
   likePostLoading: false,
   likePostDone: false,
   likePostError: null,
@@ -31,6 +34,10 @@ export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
+
+export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
+export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
+export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
 
 export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
 export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
@@ -96,6 +103,20 @@ const reducer = (state = initalState, action) => produce(state, (draft) => {
     case ADD_POST_FAILURE: 
       draft.addPostLoading = false,
       draft.addPostError = action.error
+      break;
+    case UPLOAD_IMAGES_REQUEST: 
+      draft.uploadImagesLoading = true,
+      draft.uploadImagesDone = false,
+      draft.uploadImagesError = null
+      break;
+    case UPLOAD_IMAGES_SUCCESS:
+      draft.uploadImagesLoading = false,
+      draft.uploadImagesDone = true,
+      draft.imagePaths = action.data;
+      break;
+    case UPLOAD_IMAGES_FAILURE: 
+      draft.uploadImagesLoading = false,
+      draft.uploadImagesError = action.error
       break;
     case LIKE_POST_REQUEST: 
       draft.likePostLoading = true,

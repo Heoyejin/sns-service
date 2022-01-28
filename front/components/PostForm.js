@@ -1,8 +1,9 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useCallback, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Input } from 'antd';
 import { addPost } from '../reducers/post';
 import useInput from './hooks/useInput';
+import { UPLOAD_IMAGES_REQUEST } from '../reducers/post';
 
 const PostForm = () => {
   const { imagePaths, addPostDone } = useSelector((state) => state.post);
@@ -25,6 +26,18 @@ const PostForm = () => {
     dispatch(addPost(text));
   }, [text]);
 
+  const onChangeImages = useCallback((e) => {
+    console.log('image', e.target.files);
+    const imageFormData = new FormData();
+    [].forEach.call(e.target.files, (f) => {
+      imageFormData.append('image', f);
+    });
+    console.log('imageFormData', imageFormData);
+    dispatch({
+      type: UPLOAD_IMAGES_REQUEST,
+      data: imageFormData,
+    });
+  }, []);
   return (
     <>
       <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onFinish={onSubmit}>
@@ -35,16 +48,16 @@ const PostForm = () => {
           placeholder="퇴사하고 싶어요ㅜㅜ"
         />
         <div>
-          <input type="file" multiple hidden ref={imageInput}></input>    
+          <input type="file" multiple hidden ref={imageInput} onChange={onChangeImages} />
           <Button onClick={onClickImageUpload}>이미지 업로드</Button>
           <Button type='primary' style={{ float: 'right' }} htmlType='submit'>업로드</Button>
         </div>
         <div>
           {
             imagePaths && 
-              imagePaths.map((v) => (
+              imagePaths.map((v, i) => (
                 <div key={v} style={{ display: 'inline-block' }}>
-                  <img src={v} style={{ width: '200px' }} alt={v} />
+                  <img src={`http://localhost:3065/${v}`} style={{ width: '200px' }} alt={v} />
                   <div>
                     <Button>제거</Button>
                   </div>
