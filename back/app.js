@@ -10,6 +10,8 @@ const passportConfig = require('./passport');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 
+const path = require('path');
+
 var cors = require('cors');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
@@ -35,6 +37,7 @@ app.use(cors({
   origin: 'http://localhost:3033',
   credentials: true,
 }));
+app.use('/', express.static(path.join(__dirname, 'uploads')));
 // 미들웨어는 순차적으로 실행되기 때문에 먼저 수행해줘야하는 것은 위에 선언하기
 // front에서 받아온 json데이터를 encoding해주는 로직
 app.use(express.json());

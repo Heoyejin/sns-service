@@ -16,13 +16,42 @@ try {
   fs.mkdirSync('uploads');
 }
 
+/* multer를 이용하여 이미지 업로드 하기  */
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, 'uploads');
+    },
+    filename(req, file, done) { // ex) 호예진.png
+      // 중복된 파일 명 처리
+      const ext = path.extname(file.originalname);  // 확장자 추출(.png)
+      const basename = path.basename(file.originalname, ext); // 호예진
+      done(null, basename + '_' + new Date().getTime() + ext);  // 호예진15184712891.png
+    }
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB로 제한..
+});
 
-router.post('/', isLoggedIn, async (req, res, next) => {        //Post /post
+// 이미지, 파일인 경우 req.file, req.files 가 전달
+// 그냥 text는 req.body.key 이런 식으로 전달됨
+router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {        //Post /post
   try {
+    const hashtags = req.body.content.match(/#[^\s#]+/g);
     const post = await Post.create({
       content: req.body.content,
       UserId: req.user.id,
     });
+    // 이미지 갯수에 따른 처리
+    if (req.body.image) {
+      if (Array.isArray(req.body.image)) {
+        const images = await Promise.all(req.body.image.map((img) => Image.create({ src: img })));
+        await post.addImages(images);
+      } else {
+        const image = await Image.create({ src: req.body.image });
+        await post.addImages(image);
+      }
+    }
+
     const fullPost = await Post.findOne({
       where: { id: post.id },
       include: [{
@@ -47,22 +76,6 @@ router.post('/', isLoggedIn, async (req, res, next) => {        //Post /post
     console.error(error);
     next(error);
   }
-});
-
-/* multer를 이용하여 이미지 업로드 하기  */
-const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, done) {
-      done(null, 'uploads');
-    },
-    filename(req, file, done) { // ex) 호예진.png
-      // 중복된 파일 명 처리
-      const ext = path.extname(file.originalname);  // 확장자 추출(.png)
-      const basename = path.basename(file.originalname, ext); // 호예진
-      done(null, basename + '_' + new Date().getTime() + ext);  // 호예진15184712891.png
-    }
-  }),
-  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB로 제한..
 });
 
 /*
