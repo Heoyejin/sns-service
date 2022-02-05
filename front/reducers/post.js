@@ -93,7 +93,7 @@ const reducer = (state = initalState, action) => produce(state, (draft) => {
       draft.loadPostDone = true,
       draft.mainPosts = action.data.concat(draft.mainPosts);
       // 보여질 게시물을 50개로 한정
-      draft.hasMorePost = draft.mainPosts.length < 50;
+      draft.hasMorePost = draft.mainPosts.length === 10;
       break;
     case LOAD_POST_FAILURE: 
       draft.loadPostLoading = false,

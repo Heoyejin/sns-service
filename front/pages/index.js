@@ -27,9 +27,10 @@ const Home = () => {
       // 이렇게 하면 다음 로딩하는데 까지 약간의 시간이 걸리기 때문에 300px 정도 위에서 미리 로딩
       if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
         if (hasMorePost && !loadPostLoading) {
-          console.log(hasMorePost, loadPostLoading);
+          const lastId = mainPosts[mainPosts.length - 1].id;
           dispatch({
             type: LOAD_POST_REQUEST,
+            lastId: lastId,
           });
         }
       }
