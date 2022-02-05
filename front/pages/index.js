@@ -10,6 +10,8 @@ import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 
 import wrapper from '../store/configureStore';
 import { END } from 'redux-saga';
+import axios from 'axios';
+
 // 각 페이지(index.js)의 return 부분이 _app.js의 Component에 들어간다.
 const Home = () => {
   const dispatch = useDispatch();
@@ -56,6 +58,11 @@ const Home = () => {
 
 /* 프론트 서버에서 백앤드 서버로 요청 보내는 부분 */
 export const getServerSideProps = wrapper.getServerSideProps(store => async ({req, res, next}) => {
+  const cookie = req ? req.headers.cookie : '';
+  axios.defaults.headers.Cookie = ''; 
+  if (req && cookie) {
+    axios.defaults.headers.Cookie = cookie; 
+  }
   store.dispatch({
     type: LOAD_MY_INFO_REQUEST,
   })
