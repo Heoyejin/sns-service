@@ -3,7 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-const { Post, Image, User, Comment } = require('../models');
+const { Post, Image, User, Comment, Hashtag } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 
 const router = express.Router();
@@ -41,6 +41,14 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {        /
       content: req.body.content,
       UserId: req.user.id,
     });
+
+    if (hashtags) {
+      const result = await Promise.all(hashtags.map((tag) => Hashtag.findOrCreate({
+        where: { name: tag.slice(1).toLowerCase() 
+      }})));  // ['#노드', true], ['#리액트', true]
+      await post.addHashtags(result.map((v) => v[0]));
+    }
+
     // 이미지 갯수에 따른 처리
     if (req.body.image) {
       if (Array.isArray(req.body.image)) {
