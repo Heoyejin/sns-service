@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, Input } from 'antd';
 import { ADD_POST_REQUEST } from '../reducers/post';
 import useInput from './hooks/useInput';
-import { UPLOAD_IMAGES_REQUEST } from '../reducers/post';
+import { UPLOAD_IMAGES_REQUEST, REMOVE_IMAGES } from '../reducers/post';
 
 const PostForm = () => {
   const { imagePaths, addPostDone } = useSelector((state) => state.post);
@@ -48,6 +48,15 @@ const PostForm = () => {
       data: imageFormData,
     });
   }, []);
+
+  // 프론트 단에서만 이미지를 제거함
+  const onRemoveImage = useCallback((index) => () => {
+    dispatch({
+      type: REMOVE_IMAGES,
+      data: index,
+    })
+  }, []);
+
   return (
     <>
       <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onFinish={onSubmit}>
@@ -69,7 +78,7 @@ const PostForm = () => {
                 <div key={v} style={{ display: 'inline-block' }}>
                   <img src={`http://localhost:3065/${v}`} style={{ width: '200px' }} alt={v} />
                   <div>
-                    <Button>제거</Button>
+                    <Button onClick={onRemoveImage(i)} >제거</Button>
                   </div>
                 </div>
             ))

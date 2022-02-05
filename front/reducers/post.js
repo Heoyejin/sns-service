@@ -39,6 +39,8 @@ export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
 export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
 export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
 
+export const REMOVE_IMAGES = 'REMOVE_IMAGES';
+
 export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
 export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
 export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
@@ -117,6 +119,9 @@ const reducer = (state = initalState, action) => produce(state, (draft) => {
     case UPLOAD_IMAGES_FAILURE: 
       draft.uploadImagesLoading = false,
       draft.uploadImagesError = action.error
+      break;
+    case REMOVE_IMAGES:
+      draft.imagePaths = draft.imagePaths.filter((v, i) => i != action.data)
       break;
     case LIKE_POST_REQUEST: 
       draft.likePostLoading = true,
