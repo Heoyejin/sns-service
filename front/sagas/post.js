@@ -11,16 +11,16 @@ import {
 } from '../reducers/post';
 import { ADD_POST_OF_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
-function loadPostAPI(data) {
-  return axios.get('/posts', data);
+function loadPostsAPI(lastId) {
+  return axios.get(`/posts?lastId=${lastId || 0}`);
 }
 
-function* loadPost(action) {
+function* loadPosts(action) {
   try {
     // 서버 요청 결과를 받아서 success/failure 로 Action을 나눠 주는 구간
     // put - dispatch와 비슷한 역할을 하는 effects라고 생각 하면 됨
     // call - 비동기 함수 호출, fork - 동기 함수 호출
-    const result = yield call(loadPostAPI, action.data);
+    const result = yield call(loadPostsAPI, action.lastId);
     yield delay(1000);
     yield put({
       type: LOAD_POST_SUCCESS,
@@ -30,17 +30,13 @@ function* loadPost(action) {
     console.error(err);
     yield put({
       type: LOAD_POST_FAILURE,
-      data: err.response
+      error: err.response.data
     }); 
   }
 }
 
 function addPostAPI(data) {
-  return axios.post('/post', { content: data }, 
-  // {
-  //   withCredentials: true,  // 서버와의 쿠키 전달을 위한 설정
-  // }
-  );
+  return axios.post('/post', data);
 }
 
 function* addPost(action) {
@@ -60,7 +56,7 @@ function* addPost(action) {
   } catch (err) {
     yield put({
       type: ADD_POST_FAILURE,
-      data: err.response
+      error: err.response.data
     }); 
   }
 }
@@ -80,7 +76,7 @@ function* uploadImages(action) {
     console.error(err);
     yield put({
       type: UPLOAD_IMAGES_FAILURE,
-      data: err.response
+      error: err.response.data
     }); 
   }
 }
@@ -104,7 +100,7 @@ function* removePost(action) {
     console.error(err);
     yield put({
       type: REMOVE_POST_FAILURE,
-      data: err.response,
+      error: err.response.data,
     });
   }
 }
@@ -124,7 +120,7 @@ function* likePost(action) {
     console.error(err);
     yield put({
       type: LIKE_POST_FAILURE,
-      data: err.response,
+      error: err.response.data,
     });
   }
 }
@@ -144,7 +140,7 @@ function* unlikePost(action) {
     console.error(err);
     yield put({
       type: UNLIKE_POST_FAILURE,
-      data: err.response,
+      error: err.response.data,
     });
   }
 }
@@ -167,13 +163,14 @@ function* addComment(action) {
     console.error(err);
     yield put({
       type: ADD_COMMENT_FAILURE,
-      data: err.response
+      error: err.response.data
     }); 
   }
 }
 
-function* watchLoadPost() {
-  yield takeLatest(LOAD_POST_REQUEST, loadPost);
+
+function* watchLoadPosts() {
+  yield takeLatest(LOAD_POST_REQUEST, loadPosts);
 }
 
 function* watchAddPost() {
@@ -203,7 +200,7 @@ function* watchAddComment() {
   
 export default function* postSaga (){
   yield all([
-    fork(watchLoadPost),
+    fork(watchLoadPosts),
     fork(watchAddPost),
     fork(watchUploadImages),
     fork(watchLikePost),
