@@ -8,6 +8,8 @@ import PostCard from '../components/PostCard';
 import { LOAD_POST_REQUEST } from '../reducers/post';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 
+import wrapper from '../store/configureStore';
+import { END } from 'redux-saga';
 // 각 페이지(index.js)의 return 부분이 _app.js의 Component에 들어간다.
 const Home = () => {
   const dispatch = useDispatch();
@@ -51,5 +53,17 @@ const Home = () => {
     </AppLayout>
   )
 }
+
+/* 프론트 서버에서 백앤드 서버로 요청 보내는 부분 */
+export const getServerSideProps = wrapper.getServerSideProps(store => async ({req, res, next}) => {
+  store.dispatch({
+    type: LOAD_MY_INFO_REQUEST,
+  })
+  store.dispatch({
+    type: LOAD_POST_REQUEST,
+  });
+  store.dispatch(END);
+  await store.sagaTask.toPromise();
+});
 
 export default Home;
