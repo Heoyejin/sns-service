@@ -11,16 +11,14 @@ import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 // 각 페이지(index.js)의 return 부분이 _app.js의 Component에 들어간다.
 const Home = () => {
   const dispatch = useDispatch();
-  const { mainPosts, hasMorePost, loadPostLoading } = useSelector((state) => state.post);
+  const { mainPosts, hasMorePost, loadPostLoading, retweetError } = useSelector((state) => state.post);
 
   useEffect(() => {
-    dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    })
-    dispatch({
-      type: LOAD_POST_REQUEST,
-    });
-  }, []);
+    console.log(retweetError);
+    if (retweetError) {
+      alert(retweetError);
+    }
+  }, [retweetError]);
   
   // https://github.com/bvaughn/react-virtualized
   // 메모리에 로드된 데이터는 다 담아놓고 실제 Dom에 그리는 데이터는 2-3개로 제한할 수 있음
