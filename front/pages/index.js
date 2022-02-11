@@ -5,7 +5,7 @@ import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
 
-import { LOAD_POST_REQUEST } from '../reducers/post';
+import { LOAD_POSTS_REQUEST } from '../reducers/post';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 
 import wrapper from '../store/configureStore';
@@ -15,7 +15,7 @@ import axios from 'axios';
 // 각 페이지(index.js)의 return 부분이 _app.js의 Component에 들어간다.
 const Home = () => {
   const dispatch = useDispatch();
-  const { mainPosts, hasMorePost, loadPostLoading, retweetError } = useSelector((state) => state.post);
+  const { mainPosts, hasMorePost, loadPostsLoading, retweetError } = useSelector((state) => state.post);
 
   useEffect(() => {
     console.log(retweetError);
@@ -30,10 +30,10 @@ const Home = () => {
     function onScroll() {
       // 이렇게 하면 다음 로딩하는데 까지 약간의 시간이 걸리기 때문에 300px 정도 위에서 미리 로딩
       if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
-        if (hasMorePost && !loadPostLoading) {
+        if (hasMorePost && !loadPostsLoading) {
           const lastId = mainPosts[mainPosts.length - 1].id;
           dispatch({
-            type: LOAD_POST_REQUEST,
+            type: LOAD_POSTS_REQUEST,
             lastId: lastId,
           });
         }
@@ -44,7 +44,7 @@ const Home = () => {
     return () => {
       window.removeEventListener('scroll', onScroll);
     }
-  }, [mainPosts, hasMorePost, loadPostLoading]);
+  }, [mainPosts, hasMorePost, loadPostsLoading]);
 
   const { me } = useSelector((state) => state.user);
 
@@ -67,7 +67,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async ({re
     type: LOAD_MY_INFO_REQUEST,
   })
   store.dispatch({
-    type: LOAD_POST_REQUEST,
+    type: LOAD_POSTS_REQUEST,
   });
   store.dispatch(END);
   await store.sagaTask.toPromise();

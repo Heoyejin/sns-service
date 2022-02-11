@@ -5,7 +5,7 @@ import { StopOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import { UNFOLLOW_REQUEST, REMOVE_FOLLOWER_REQUEST } from '../reducers/user';
 
-const FollowList = ({ header, data}) => {
+const FollowList = ({ header, data }) => {
   const dispatch = useDispatch();
 
   const onCancel = (id) => () => {

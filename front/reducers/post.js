@@ -4,9 +4,9 @@ export const initalState = {
   mainPosts: [],
   imagePaths: [], // 이미지 업로드 경로
   hasMorePost: true,
-  loadPostLoading: false,
-  loadPostDone: false,
-  loadPostError: null,
+  loadPostsLoading: false,
+  loadPostsDone: false,
+  loadPostsError: null,
   uploadImagesLoading: false,
   uploadImagesDone: false,
   uploadImagesError: null,
@@ -30,9 +30,9 @@ export const initalState = {
   retweetError: null,
 };
 
-export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
-export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
-export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
+export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
+export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
+export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
@@ -83,21 +83,21 @@ export const addComment = (data) => {
 const reducer = (state = initalState, action) => produce(state, (draft) => {
   // immer가 알아서 불변성을 지켜서 return 해줌
   switch (action.type) {
-    case LOAD_POST_REQUEST: 
-      draft.loadPostLoading = true,
-      draft.loadPostDone = false,
-      draft.loadPostError = null
+    case LOAD_POSTS_REQUEST: 
+      draft.loadPostsLoading = true,
+      draft.loadPostsDone = false,
+      draft.loadPostsError = null
       break;
-    case LOAD_POST_SUCCESS:
-      draft.loadPostLoading = false,
-      draft.loadPostDone = true,
+    case LOAD_POSTS_SUCCESS:
+      draft.loadPostsLoading = false,
+      draft.loadPostsDone = true,
       draft.mainPosts = action.data.concat(draft.mainPosts);
       // 보여질 게시물을 50개로 한정
       draft.hasMorePost = draft.mainPosts.length === 10;
       break;
-    case LOAD_POST_FAILURE: 
-      draft.loadPostLoading = false,
-      draft.loadPostError = action.error
+    case LOAD_POSTS_FAILURE: 
+      draft.loadPostsLoading = false,
+      draft.loadPostsError = action.error
       break;
     case ADD_POST_REQUEST: 
       draft.addPostLoading = true,

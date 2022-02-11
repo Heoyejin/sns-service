@@ -1,7 +1,7 @@
 import { all, fork, put, call, delay, takeLatest } from "@redux-saga/core/effects";
 import axios from 'axios';
 import { 
-  LOAD_POST_REQUEST, LOAD_POST_SUCCESS, LOAD_POST_FAILURE,
+  LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE,
   ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE,
   ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE, 
   REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, REMOVE_POST_FAILURE,
@@ -24,13 +24,13 @@ function* loadPosts(action) {
     const result = yield call(loadPostsAPI, action.lastId);
     yield delay(1000);
     yield put({
-      type: LOAD_POST_SUCCESS,
+      type: LOAD_POSTS_SUCCESS,
       data: result.data,
     });
   } catch (err) {
     console.error(err);
     yield put({
-      type: LOAD_POST_FAILURE,
+      type: LOAD_POSTS_FAILURE,
       error: err.response.data
     }); 
   }
@@ -190,7 +190,7 @@ function* retweet(action) {
 }
 
 function* watchLoadPosts() {
-  yield takeLatest(LOAD_POST_REQUEST, loadPosts);
+  yield takeLatest(LOAD_POSTS_REQUEST, loadPosts);
 }
 
 function* watchAddPost() {
