@@ -86,6 +86,53 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {        /
   }
 });
 
+router.get('/:postId', async (req, res, next) => {
+  try {
+    const post = await Post.findOne({
+      where: { id: req.params.postId },
+      include: [{
+        model: Post,
+        as: 'Retweet'
+      }]
+    });
+    if (!post) {
+      return res.status(404).send('존재하지 않는 게시글 입니다.');
+    }
+    const fullPost = await Post.findOne({
+      where: { id: retweet.id },
+      include: [{
+        model: Post,
+        as: 'Retweet',
+        include: [{
+          model: User,
+          as: ['id', 'nickname'],
+        }, {
+          model: Image,
+        }]
+      }, {
+        model: Image,
+      }, {
+        model: User,
+        as: 'Likers',
+        as: ['id', 'nickname'],
+      }, {
+        model: User,
+        as: ['id', 'nickname'],
+      }, {
+        model: Comment,
+        include: [{
+          model: User,
+          as: ['id', 'nickname'],
+        }]
+      }]
+    })
+    res.status(201).send(fullPost);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 /*
   * 요청을 두번 보내는 방식
   * 1. 첫번째 요청때 이미지를 보내서 파일명을 return
@@ -123,7 +170,8 @@ router.delete('/:postId/like', isLoggedIn, async (req, res, next) => {
     console.error(error);
     next(error);
   }
-})
+});
+
 router.post('/:postId/comment/', isLoggedIn, async (req, res, next) => {        //Post /post/1/comment
   try {
     const post = await Post.findOne({

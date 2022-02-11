@@ -1,9 +1,13 @@
 import produce from 'immer';
 
 export const initalState = {
+  singlePost: null,
   mainPosts: [],
   imagePaths: [], // 이미지 업로드 경로
   hasMorePost: true,
+  loadPostLoading: false,
+  loadPostDone: false,
+  loadPostError: null,
   loadPostsLoading: false,
   loadPostsDone: false,
   loadPostsError: null,
@@ -29,6 +33,10 @@ export const initalState = {
   retweetDone: false,
   retweetError: null,
 };
+
+export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
+export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
+export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
 
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
@@ -83,6 +91,20 @@ export const addComment = (data) => {
 const reducer = (state = initalState, action) => produce(state, (draft) => {
   // immer가 알아서 불변성을 지켜서 return 해줌
   switch (action.type) {
+    case LOAD_POST_REQUEST: 
+      draft.loadPostLoading = true,
+      draft.loadPostDone = false,
+      draft.loadPostError = null
+      break;
+    case LOAD_POST_SUCCESS:
+      draft.loadPostLoading = false,
+      draft.loadPostDone = true,
+      draft.singlePost = action.data.concat(draft.mainPosts);
+      break;
+    case LOAD_POST_FAILURE: 
+      draft.loadPostLoading = false,
+      draft.loadPostError = action.error
+      break;
     case LOAD_POSTS_REQUEST: 
       draft.loadPostsLoading = true,
       draft.loadPostsDone = false,

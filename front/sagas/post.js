@@ -1,6 +1,7 @@
 import { all, fork, put, call, delay, takeLatest } from "@redux-saga/core/effects";
 import axios from 'axios';
 import { 
+  LOAD_POST_REQUEST, LOAD_POST_SUCCESS, LOAD_POST_FAILURE,
   LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POSTS_FAILURE,
   ADD_POST_REQUEST, ADD_POST_SUCCESS, ADD_POST_FAILURE,
   ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE, 
@@ -12,6 +13,26 @@ import {
 } from '../reducers/post';
 import { ADD_POST_OF_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
+function loadPostAPI(data) {
+  return axios.get(`/post?${data}`);
+}
+
+function* loadPost(action) {
+  try {
+    const result = yield call(loadPostAPI, action.data);
+    yield put({
+      type: LOAD_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_POST_FAILURE,
+      error: err.response.data,
+    }); 
+  }
+}
+
 function loadPostsAPI(lastId) {
   return axios.get(`/posts?lastId=${lastId || 0}`);
 }
@@ -22,7 +43,6 @@ function* loadPosts(action) {
     // put - dispatch와 비슷한 역할을 하는 effects라고 생각 하면 됨
     // call - 비동기 함수 호출, fork - 동기 함수 호출
     const result = yield call(loadPostsAPI, action.lastId);
-    yield delay(1000);
     yield put({
       type: LOAD_POSTS_SUCCESS,
       data: result.data,
@@ -193,6 +213,10 @@ function* watchLoadPosts() {
   yield takeLatest(LOAD_POSTS_REQUEST, loadPosts);
 }
 
+function* watchLoadPost() {
+  yield takeLatest(LOAD_POST_REQUEST, loadPost);
+}
+
 function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, addPost);
 }
@@ -225,6 +249,7 @@ function* watchRetweet() {
 export default function* postSaga (){
   yield all([
     fork(watchLoadPosts),
+    fork(watchLoadPost),
     fork(watchAddPost),
     fork(watchUploadImages),
     fork(watchLikePost),
