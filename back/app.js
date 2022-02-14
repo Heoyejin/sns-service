@@ -44,7 +44,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // 백엔드 서버에서 로그인 정보 전체를(session) 암호화한 문자열을(cookie) 프론트 쪽에 보내줌 
-// 
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session({
   saveUninitialized: false,
@@ -58,9 +57,6 @@ app.get('/', (req, res) => {
   res.send('hello express');
 });
 
-app.get('/', (req, res) => {
-  res.send('hello api');
-});
 
 // 첫번째 인자는 prefix!!
 app.use('/post', postRouter);
