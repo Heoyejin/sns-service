@@ -42,6 +42,11 @@ export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
 export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
 
+
+export const LOAD_HASHTAG_POSTS_REQUEST = 'LOAD_HASHTAG_POSTS_REQUEST';
+export const LOAD_HASHTAG_POSTS_SUCCESS = 'LOAD_HASHTAG_POSTS_SUCCESS';
+export const LOAD_HASHTAG_POSTS_FAILURE = 'LOAD_HASHTAG_POSTS_FAILURE';
+
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
@@ -105,19 +110,22 @@ const reducer = (state = initalState, action) => produce(state, (draft) => {
       draft.loadPostLoading = false,
       draft.loadPostError = action.error
       break;
-    case LOAD_POSTS_REQUEST: 
+    case LOAD_POSTS_REQUEST:
+    case LOAD_HASHTAG_POSTS_REQUEST:
       draft.loadPostsLoading = true,
       draft.loadPostsDone = false,
       draft.loadPostsError = null
       break;
     case LOAD_POSTS_SUCCESS:
+    case LOAD_HASHTAG_POSTS_SUCCESS:
       draft.loadPostsLoading = false,
       draft.loadPostsDone = true,
       draft.mainPosts = action.data.concat(draft.mainPosts);
       // 보여질 게시물을 50개로 한정
       draft.hasMorePost = draft.mainPosts.length === 10;
       break;
-    case LOAD_POSTS_FAILURE: 
+    case LOAD_POSTS_FAILURE:
+    case LOAD_HASHTAG_POSTS_FAILURE:
       draft.loadPostsLoading = false,
       draft.loadPostsError = action.error
       break;
