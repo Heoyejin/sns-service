@@ -102,7 +102,7 @@ const reducer = (state = initalState, action) => produce(state, (draft) => {
     case LOAD_POST_REQUEST: 
       draft.loadPostLoading = true,
       draft.loadPostDone = false,
-      draft.loadPostError = null
+      draft.loadPostError = null;
       break;
     case LOAD_POST_SUCCESS:
       draft.loadPostLoading = false,
@@ -111,14 +111,14 @@ const reducer = (state = initalState, action) => produce(state, (draft) => {
       break;
     case LOAD_POST_FAILURE: 
       draft.loadPostLoading = false,
-      draft.loadPostError = action.error
+      draft.loadPostError = action.error;
       break;
     case LOAD_POSTS_REQUEST:
     case LOAD_HASHTAG_POSTS_REQUEST:
     case LOAD_USER_POSTS_REQUEST:
       draft.loadPostsLoading = true,
       draft.loadPostsDone = false,
-      draft.loadPostsError = null
+      draft.loadPostsError = null;
       break;
     case LOAD_POSTS_SUCCESS:
     case LOAD_HASHTAG_POSTS_SUCCESS:
@@ -133,7 +133,7 @@ const reducer = (state = initalState, action) => produce(state, (draft) => {
     case LOAD_HASHTAG_POSTS_FAILURE:
     case LOAD_USER_POSTS_FAILURE:
       draft.loadPostsLoading = false,
-      draft.loadPostsError = action.error
+      draft.loadPostsError = action.error;
       break;
     case ADD_POST_REQUEST: 
       draft.addPostLoading = true,
@@ -144,16 +144,16 @@ const reducer = (state = initalState, action) => produce(state, (draft) => {
       draft.addPostLoading = false,
       draft.addPostDone = true,
       draft.mainPosts.unshift(action.data),
-      draft.imagePaths = null
+      draft.imagePaths = null;
       break;
     case ADD_POST_FAILURE: 
       draft.addPostLoading = false,
-      draft.addPostError = action.error
+      draft.addPostError = action.error;
       break;
     case UPLOAD_IMAGES_REQUEST: 
       draft.uploadImagesLoading = true,
       draft.uploadImagesDone = false,
-      draft.uploadImagesError = null
+      draft.uploadImagesError = null;
       break;
     case UPLOAD_IMAGES_SUCCESS:
       draft.uploadImagesLoading = false,
@@ -162,7 +162,7 @@ const reducer = (state = initalState, action) => produce(state, (draft) => {
       break;
     case UPLOAD_IMAGES_FAILURE: 
       draft.uploadImagesLoading = false,
-      draft.uploadImagesError = action.error
+      draft.uploadImagesError = action.error;
       break;
     case REMOVE_IMAGES:
       draft.imagePaths = draft.imagePaths.filter((v, i) => i != action.data)
