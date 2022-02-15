@@ -1,4 +1,4 @@
-import produce from 'immer'
+import produce from '../util/produce';
 
 const initalState = {
   loadUserLoading: false,
