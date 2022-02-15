@@ -1,3 +1,4 @@
+import React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';   // 이런식으로 객체 타입으로 받으면 수정가능함
 import { ServerStyleSheet } from 'styled-components';
 

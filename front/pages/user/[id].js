@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Card } from 'antd';
-import { END } from 'redux-saga';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import axios from 'axios';
+import AppLayout from '../../components/AppLayout';
 import { LOAD_USER_POSTS_REQUEST } from '../../reducers/post';
 import { LOAD_MY_INFO_REQUEST, LOAD_USER_REQUEST } from '../../reducers/user';
 import PostCard from '../../components/PostCard';
+import Head from 'next/head';
+
+import axios from 'axios';
 import wrapper from '../../store/configureStore';
-import AppLayout from '../../components/AppLayout';
+import { END } from 'redux-saga';
 
 const User = () => {
   const dispatch = useDispatch();

@@ -2,14 +2,15 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import { END } from 'redux-saga';
+
+import { LOAD_HASHTAG_POSTS_REQUEST } from '../../reducers/post';
+import { LOAD_MY_INFO_REQUEST } from '../../reducers/user';
+import PostCard from '../../components/PostCard';
+import AppLayout from '../../components/AppLayout';
 
 import axios from 'axios';
-import { LOAD_HASHTAG_POSTS_REQUEST } from '../../reducers/post';
-import PostCard from '../../components/PostCard';
 import wrapper from '../../store/configureStore';
-import { LOAD_MY_INFO_REQUEST } from '../../reducers/user';
-import AppLayout from '../../components/AppLayout';
+import { END } from 'redux-saga';
 
 const Hashtag = () => {
   const dispatch = useDispatch();
