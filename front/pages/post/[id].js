@@ -15,6 +15,11 @@ const Post = () =>  {
   const { id } = router.query;
   const { singlePost } = useSelector((state) => state.post);
 
+  // 잠깐 기다려주는 로직을 추가
+  if (router.isFallback) {
+    return <div>로딩중...</div>;
+  }
+
   return (
     <AppLayout>
       <Head>
@@ -33,7 +38,22 @@ const Post = () =>  {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(store => async ({req, res, next}) => {
+export async function getStaticPaths() {
+  // 아래처럼 미리 paths를 미리 지정해놔야함.
+  // 페이지가 제한적인 경우에만 사용가능 함.
+  return {
+    paths: [
+      { params: { id: '1' } },
+      { params: { id: '2' } },
+      { params: { id: '3' } },
+    ],
+    // fallback이 true 인 경우 에러는 안나지만 서버사이드 렌더링 불가능
+    fallback: false,
+  }
+}
+
+// 동적 라우팅에서 getStaticProps를 사용하면 무조건 오류가 나기 때문에 getStaticPaths를 선언해줘야함.
+export const getStaticProps = wrapper.getStaticProps(store => async ({req, res, next}) => {
   const cookie = req ? req.headers.cookie : '';
   axios.defaults.headers.Cookie = ''; 
   if (req && cookie) {
