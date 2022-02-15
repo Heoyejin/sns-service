@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "babel-plugin-styled-components": "^2.0.2"
+    "babel-plugin-styled-components": "^2.0.2",
+    "swr": "^1.2.1"
   }
 }

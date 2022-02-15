@@ -40,6 +40,39 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+/* 팔로우 목록 불러오기 */ 
+router.get('/followers', isLoggedIn, async (req, res, next) => { // GET /user/followers
+  try {
+    const user = await User.findOne({ where: { id: req.user.id }});
+    if (!user) {
+      res.status(403).send('가입하지 않은 회원입니다.');
+    }
+    const followers = await user.getFollowers({
+      limit: parseInt(req.query.limit),
+    });
+    res.status(200).json(followers);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.get('/followings', isLoggedIn, async (req, res, next) => { // GET /user/followings
+  try {
+    const user = await User.findOne({ where: { id: req.user.id }});
+    if (!user) {
+      res.status(403).send('가입하지 않은 회원입니다.');
+    }
+    const followings = await user.getFollowers({
+      limit: parseInt(req.query.limit),
+    });
+    res.status(200).json(followings);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 router.get('/:userId/posts', async (req, res, next) => { //GET /user/:userId/posts
   try {
     const where = { UserId: req.params.userId };
@@ -216,35 +249,6 @@ router.delete('/follower/:userId', isLoggedIn, async (req, res, next) => { // DE
     }
     await user.removeFollowing(req.user.id);
     res.status(200).json({ UserId: parseInt(req.params.userId, 10) });s
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
-
-/* 팔로우 목록 불러오기 */ 
-router.get('/followers', isLoggedIn, async (req, res, next) => { // DELETE /user/1/follow
-  try {
-    const user = await User.findOne({ where: { id: req.user.id }});
-    if (!user) {
-      res.status(403).send('가입하지 않은 회원입니다.');
-    }
-    const followers = await user.getFollowers(req.user.id);
-    res.status(200).json(followers);
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
-
-router.get('/followings', isLoggedIn, async (req, res, next) => { // DELETE /user/1/follow
-  try {
-    const user = await User.findOne({ where: { id: req.user.id }});
-    if (!user) {
-      res.status(403).send('가입하지 않은 회원입니다.');
-    }
-    const followings = await user.getFollowers(req.user.id);
-    res.status(200).json(followings);
   } catch (error) {
     console.error(error);
     next(error);
