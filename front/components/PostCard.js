@@ -4,12 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Card, Popover, Button, Avatar, List, Comment } from "antd";
 import { RetweetOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
 import Link from 'next/link';
+import moment from 'moment';
 
 import PostImages from './PostImages';
 import PostCardContent from './PostCardContent';
 import CommentForm from './CommnetForm';
 import FollowButton from './FollowButton';
 import { REMOVE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST, RETWEET_REQUEST } from '../reducers/post';
+
+moment.locale('ko');
 
 const PostCard = ({ post }) => {
   const id = useSelector((state) => state.user.me?.id);
@@ -95,6 +98,7 @@ const PostCard = ({ post }) => {
           { post.RetweetId && post.Retweet 
             ? (
               <Card cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}>
+                <div style={{ float: 'right'}}>{moment(post.createAt).startOf('hour').fromNow()}</div>
                 <Card.Meta 
                   avatar={(
                     <Link href={`/user/${post.Retweet.User.id}`}>
@@ -106,15 +110,18 @@ const PostCard = ({ post }) => {
                 </Card.Meta>
               </Card>
             ) : (
-              <Card.Meta 
-                avatar={(
-                  <Link href={`/user/${post.Retweet.User.id}`}>
-                    <a><Avatar>{post.User.nickname}</Avatar></a>
-                  </Link>
-                )}
-                title={post.User.nickname}
-                description={<PostCardContent postData={post.content} />}>
-              </Card.Meta>
+              <>
+                <div style={{ float: 'right'}}>{moment(post.createAt).startOf('hour').fromNow()}</div>
+                <Card.Meta 
+                  avatar={(
+                    <Link href={`/user/${post.Retweet.User.id}`}>
+                      <a><Avatar>{post.User.nickname}</Avatar></a>
+                    </Link>
+                  )}
+                  title={post.User.nickname}
+                  description={<PostCardContent postData={post.content} />}>
+                </Card.Meta>
+              </>
             )}
         </Card>
         {
