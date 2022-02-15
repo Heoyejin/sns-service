@@ -1,11 +1,13 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Menu, Input, Row, Col  } from 'antd';
+import Router from 'next/router';
 
 import UserProfile from '../components/UserProfile';
 import LoginForm from '../components/LoginForm';
+import useInput from './hooks/useInput';
 
 // style을 컴포넌트 쓰기 싫으면 useMome 사용가능
 // const SearchInput = styled(Input.Search)`
@@ -18,6 +20,12 @@ const AppLayout = ({ children }) => {
   const { me } = useSelector((state) => state.user);
   const style = useMemo(() => ({ marginTop: 10 }), []);
   
+  const [searchInput, onChangeSearchInput] = useInput('');
+  
+  const onSearch = useCallback(() => {
+    Router.push(`/hashtag/${searchInput}`);
+  }, [searchInput]);
+  
   return (
     <div>
       <Menu mode="horizontal">
@@ -28,7 +36,13 @@ const AppLayout = ({ children }) => {
         <Link href='/profile'><a>프로필</a></Link>
       </Menu.Item>
       <Menu.Item>
-        <Search style={style}></Search>
+        <Search
+          enterButton
+          value={searchInput}
+          onChange={onChangeSearchInput}
+          onSearch={onSearch}
+          style={style} 
+        />
       </Menu.Item>
       <Menu.Item>
         <Link href='/signup'><a>회원가입</a></Link>
