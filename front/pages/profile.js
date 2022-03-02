@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import useSWR from 'swr';
 
 import Head from 'next/head';
@@ -7,9 +7,10 @@ import NicknameEditForm from '../components/NickNameEditForm';
 import FollowList from '../components/FollowList';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 
 import axios from 'axios';
-import wrapper from '../../store/configureStore';
+import wrapper from '../store/configureStore';
 import { END } from 'redux-saga';
 
 // graphql도 사용해보기
