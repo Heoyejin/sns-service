@@ -13,7 +13,7 @@ module.exports = withBundleAnalyzer({
  
     return {
       ...config,
-      mode: prod ? 'prodoction' : 'development',
+      mode: prod ? 'production' : 'development',
       devtool: prod ? 'hidden-sorce-map' : 'eval',
       plugins,
     }
