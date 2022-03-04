@@ -8,8 +8,8 @@ module.exports = class Comment extends Model {
         allowNull: false
       },
     }, {
-      modelName: 'Comment',
-      tableName: 'Comment',
+      modelName: 'Comments',
+      tableName: 'comments',
       charset: 'utf8mb4',
       collate: 'utf8mb4_general_ci',
       sequelize,

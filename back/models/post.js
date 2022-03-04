@@ -11,7 +11,7 @@ module.exports = class Post extends Model {
       },
     }, {
       modelName: 'Post',
-      tableName: 'Post',
+      tableName: 'posts',
       charset: 'utf8mb4',
       collate: 'utf8mb4_general_ci',  // 한글 + 이모티콘 저장
       sequelize,
