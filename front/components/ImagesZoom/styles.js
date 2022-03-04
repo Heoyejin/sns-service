@@ -26,7 +26,7 @@ export const Header = styled.header`
   position: relative;
   padding: 0;
   text-align: center;
-  
+
   & h1 {
     margin: 0;
     font-size: 17px;
@@ -51,7 +51,7 @@ export const CloseBtn = styled(CloseOutlined)`
 
 export const Indicator = styled.div`
   text-align: center;
-  
+
   & > div {
     width: 75px;
     height: 30px;
@@ -68,7 +68,7 @@ export const Indicator = styled.div`
 export const ImgWrapper = styled.div`
   padding: 32px;
   text-align: center;
-  
+
   & img {
     margin: 0 auto;
     max-height: 750px;

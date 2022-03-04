@@ -29,24 +29,24 @@ const AppLayout = ({ children }) => {
   return (
     <div>
       <Menu mode="horizontal">
-      <Menu.Item>
-        <Link href='/'><a>공통메뉴</a></Link>
-      </Menu.Item>
-      <Menu.Item>
-        <Link href='/profile'><a>프로필</a></Link>
-      </Menu.Item>
-      <Menu.Item>
-        <Search
-          enterButton
-          value={searchInput}
-          onChange={onChangeSearchInput}
-          onSearch={onSearch}
-          style={style} 
-        />
-      </Menu.Item>
-      <Menu.Item>
-        <Link href='/signup'><a>회원가입</a></Link>
-      </Menu.Item>
+        <Menu.Item>
+          <Link href='/'><a>공통메뉴</a></Link>
+        </Menu.Item>
+        <Menu.Item>
+          <Link href='/profile'><a>프로필</a></Link>
+        </Menu.Item>
+        <Menu.Item>
+          <Search
+            enterButton
+            value={searchInput}
+            onChange={onChangeSearchInput}
+            onSearch={onSearch}
+            style={style} 
+          />
+        </Menu.Item>
+        <Menu.Item>
+          <Link href='/signup'><a>회원가입</a></Link>
+        </Menu.Item>
       </Menu> 
       <Row gutter={8}>
         {/* xs: 24=100% 기준으로  md:차지할 비율 */}
@@ -58,7 +58,7 @@ const AppLayout = ({ children }) => {
           {children}
         </Col>
         <Col xs={24} md={6}>
-          <a href="https://demo.ibleaders.com/ibsheet/v8/samples/customer-sample/html/main.html" target="_blank" rel="noreferrer noopener">IBSheet Demo</a>
+
         </Col>
       </Row>
     </div>
