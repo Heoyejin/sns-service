@@ -1,19 +1,12 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Form, Input, Button } from 'antd';
+
 import Link from 'next/link';
-import styled from 'styled-components';
+import AccountLayout from './AccountLayout';
+import { FormWrapper, ButtonWrapper, InputWrapper, BoldLink, Hr } from '../styles/account';
 import useInput from './hooks/useInput';
 import { loginRequestAction } from '../reducers/user';
-
-const ButtonWrapper = styled.div`
-  margin-top: 10px;
-`;
-
-const FormWrapper = styled(Form)`
-  padding: 10px;
-`;
 
 const LoginForm = () => {
   const [email, onChangeEmail] = useInput('');
@@ -33,27 +26,25 @@ const LoginForm = () => {
 
   return (
     <>
-      <FormWrapper onFinish={ onSubmitForm }>
-        <div>
-          <label htmlFor="user-email">이메일</label>
-          <br />
-          <Input name="user-email" value={ email } onChange={ onChangeEmail }></Input>
-        </div>
-        <div>
-          <label htmlFor="user-password">비밀번호</label>
-          <br />
-          <Input name="user-password" 
+      <AccountLayout>
+        <FormWrapper onFinish={ onSubmitForm }>
+          <div>
+            <InputWrapper name="user-email" value={ email } placeholder="이메일" onChange={ onChangeEmail }></InputWrapper>
+            <InputWrapper name="user-password" 
                 type="password"
-                value={ password } 
+                value={ password }
+                placeholder="비밀번호"
                 onChange={ onChangePassWord }
-                required>      
-          </Input>
-        </div>
-        <ButtonWrapper>
-          <Button type="primary" htmlType="submit" loading={ logInLoading }>로그인</Button>
-          <Link href="/signup"><a><Button>회원가입</Button></a></Link>
-        </ButtonWrapper>
-      </FormWrapper>
+                required>
+            </InputWrapper>
+            <ButtonWrapper type="primary" htmlType="submit" loading={ logInLoading }>로그인</ButtonWrapper>
+          </div>
+          <Hr/>
+          <div style={{ textAlign: 'center' }}>
+            <Link href="/signup"><BoldLink>회원가입</BoldLink></Link>
+          </div>
+        </FormWrapper>
+      </AccountLayout>
     </>
   )
 }

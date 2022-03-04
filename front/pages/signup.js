@@ -1,16 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Checkbox, Form, Input, Button } from 'antd';
-import Head from 'next/head';
-import AppLayout from '../components/AppLayout';
+import React, { useState, useEffect, useCallback } from 'react';
 import useInput from '../components/hooks/useInput';
-import styled from 'styled-components'
-import { SIGN_UP_REQUEST, LOAD_MY_INFO_REQUEST } from '../reducers/user';
+
+import { Checkbox } from 'antd';
+import { FormWrapper, ButtonWrapper, InputWrapper } from '../styles/account';
+import styled from 'styled-components';
+
+import { SIGN_UP_REQUEST } from '../reducers/user';
 import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
-
-import axios from 'axios';
-import wrapper from '../store/configureStore';
-import { END } from 'redux-saga';
+import AccountLayout from '../components/AccountLayout';
 
 const ErrorMessage = styled.div`
   color: 'red'
@@ -22,7 +20,7 @@ const SignUp = () => {
 
   useEffect(() => {
     if (me && me.id) {
-      Router.replace('/');
+      Router.replace('/login');
     }
   }, [me]);
 
@@ -70,30 +68,13 @@ const SignUp = () => {
   }, [password, passwordCheck, term]);
 
   return (
-    <AppLayout>    
-      <Head>
-        <title>회원가입</title>
-      </Head>
-      <Form onFinish={onSubmit}>
+    <AccountLayout>
+      <FormWrapper onFinish={onSubmit}>
         <div>
-          <label htmlFor="user-email">이메일</label>
-          <br />
-          <Input name="user-email" value={email} required onChange={onChangeEmail}></Input>
-        </div>
-        <div>
-          <label htmlFor="user-nickname">닉네임</label>
-          <br />
-          <Input name="user-nickname" value={nickname} required onChange={onChangeNickname}></Input>
-        </div>
-        <div>
-          <label htmlFor="user-password">비밀번호</label>
-          <br />
-          <Input type={ password } name="user-nickname" value={password} required onChange={onChangePassword}></Input>
-        </div>
-        <div>
-          <label htmlFor="user-password-check">비밀번호 확인</label>
-          <br />
-          <Input type={ password } name="user-password" value={passwordCheck} required onChange={onChangePassWordCheck}></Input>
+          <InputWrapper name="user-email" value={email} required onChange={onChangeEmail}></InputWrapper>
+          <InputWrapper name="user-nickname" value={nickname} required onChange={onChangeNickname}></InputWrapper>
+          <InputWrapper type={ password } name="user-nickname" value={password} required onChange={onChangePassword}></InputWrapper>
+          <InputWrapper type={ password } name="user-password" value={passwordCheck} required onChange={onChangePassWordCheck}></InputWrapper>
           {passwordError && <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>}
         </div>
         <div>
@@ -101,25 +82,11 @@ const SignUp = () => {
           {termError && <div style={{ color: 'red'}}>약관에 동의하셔야 합니다.</div>}
         </div>
         <div style={{ marginTop: 10}}>
-          <Button type="primary" htmlType="submit" loading={ signUpLoaging }>가입</Button>
+          <ButtonWrapper type="primary" htmlType="submit" loading={ signUpLoaging }>가입</ButtonWrapper>
         </div>
-      </Form>
-    </AppLayout>
+      </FormWrapper>
+    </AccountLayout>
   )
 }
-
-export const getServerSideProps = wrapper.getServerSideProps(store => async ({req, res, next}) => {
-  const cookie = req ? req.headers.cookie : '';
-  axios.defaults.headers.Cookie = '';
-  if (req && cookie) {
-    axios.defaults.headers.Cookie = cookie;
-  }
-  store.dispatch({
-    type: LOAD_MY_INFO_REQUEST,
-  });
-  store.dispatch(END);
-  console.log('getServerSideProps end');
-  await store.sagaTask.toPromise();
-});
 
 export default SignUp;

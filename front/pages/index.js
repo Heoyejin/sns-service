@@ -10,6 +10,7 @@ import { LOAD_POSTS_REQUEST } from '../reducers/post';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 
 import wrapper from '../store/configureStore';
+import LoginForm from '../components/LoginForm';
 
 // 각 페이지(index.js)의 return 부분이 _app.js의 Component에 들어간다.
 const Home = () => {
@@ -48,10 +49,14 @@ const Home = () => {
   const { me } = useSelector((state) => state.user);
 
   return (
-    <AppLayout>
-      { me && <PostForm /> }
-      { mainPosts.map((post) => <PostCard key={post.id} post={post} />)}
-    </AppLayout>
+    me ? (
+      <AppLayout>
+        <PostForm />
+        { mainPosts.map((post) => <PostCard key={post.id} post={post} />)}
+      </AppLayout>
+    ) : (
+      <LoginForm />
+    )
   )
 }
 
@@ -70,6 +75,7 @@ export const getServerSideProps = wrapper.getServerSideProps(store => async ({re
   });
   store.dispatch(END);
   await store.sagaTask.toPromise();
+  // return { props: {data: 123} }; // 이런 식으로 서버사이드 렌더링도 가능
 });
 
 export default Home;
