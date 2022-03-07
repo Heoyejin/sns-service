@@ -89,7 +89,7 @@ const User = () => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(store => async ({req, res, next}) => {
+export const getServerSideProps = wrapper.getServerSideProps(store => async ({req, res, next, params}) => {
   const cookie = req ? req.headers.cookie : '';
   axios.defaults.headers.Cookie = '';
   if (req && cookie) {
