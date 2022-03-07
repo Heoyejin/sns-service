@@ -9,3 +9,5 @@ node_modules/
 back/uploads/
 
 package-lock.json
+
+.DS_store
