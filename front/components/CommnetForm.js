@@ -4,7 +4,14 @@ import { Form, Input, Button } from 'antd';
 import useInput from './hooks/useInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { ADD_COMMENT_REQUEST } from '../reducers/post';
+import styled from 'styled-components';
 
+const CommentFormWrapper = styled.div`
+  display: flex;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #f0f0f0;
+  padding: 10px;
+`;
 const CommentForm = ({post}) => {
   const dispatch = useDispatch();
   const id = useSelector((state) => state.user.me?.id);
@@ -27,12 +34,14 @@ const CommentForm = ({post}) => {
 
   return (
     <>
-      <Form onFinish={onSubmitComment}>
-        <Form.Item style={{ position: 'relative', margin: 0 }}>
-          <Input.TextArea value={commentText} onChange={onChangeCommnetText} rows={4} />
-          <Button style={{ position: 'absolute', right: 0, bottom: -40, zIndex: 1 }} htmlType='submit' loading={addCommentLoading}>입력</Button>
-        </Form.Item>
-      </Form>     
+      <CommentFormWrapper>
+        <Form onFinish={onSubmitComment} style={{ width: '100%' }}>
+          <Form.Item style={{ marginBottom: '0px' }}>
+            <Input value={commentText} onChange={onChangeCommnetText} rows={4} bordered={false} placeholder='댓글 달기...'/>
+          </Form.Item>
+        </Form>     
+        <Button htmlType='submit' loading={addCommentLoading}>입력</Button>
+      </CommentFormWrapper>
     </>
   )
 }
