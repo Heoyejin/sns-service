@@ -30,7 +30,7 @@ const LoginForm = () => {
         <FormWrapper onFinish={ onSubmitForm }>
           <div>
             <InputWrapper name="user-email" value={ email } placeholder="이메일" onChange={ onChangeEmail }></InputWrapper>
-            <InputWrapper name="user-password" 
+            <InputWrapper name="user-password"
                 type="password"
                 value={ password }
                 placeholder="비밀번호"
