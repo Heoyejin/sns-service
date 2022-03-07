@@ -114,7 +114,7 @@ const PostCard = ({ post }) => {
                 <div style={{ float: 'right'}}>{moment(post.createAt).startOf('hour').fromNow()}</div>
                 <Card.Meta 
                   avatar={(
-                    <Link href={`/user/${post.Retweet.User.id}`}>
+                    <Link href={`/user/${post.id}`}>
                       <a><Avatar>{post.User.nickname}</Avatar></a>
                     </Link>
                   )}
