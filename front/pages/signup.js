@@ -71,10 +71,10 @@ const SignUp = () => {
     <AccountLayout>
       <FormWrapper onFinish={onSubmit}>
         <div>
-          <InputWrapper name="user-email" value={email} required onChange={onChangeEmail}></InputWrapper>
-          <InputWrapper name="user-nickname" value={nickname} required onChange={onChangeNickname}></InputWrapper>
-          <InputWrapper type={ password } name="user-nickname" value={password} required onChange={onChangePassword}></InputWrapper>
-          <InputWrapper type={ password } name="user-password" value={passwordCheck} required onChange={onChangePassWordCheck}></InputWrapper>
+          <InputWrapper name="user-email" value={email} placeholder="이메일" required onChange={onChangeEmail}></InputWrapper>
+          <InputWrapper name="user-nickname" value={nickname} placeholder="닉네임" required onChange={onChangeNickname}></InputWrapper>
+          <InputWrapper type="password" name="user-password" placeholder="비밀번호" value={password} required onChange={onChangePassword}></InputWrapper>
+          <InputWrapper type="password" name="user-password" placeholder="비밀번호 확인" value={passwordCheck} required onChange={onChangePassWordCheck}></InputWrapper>
           {passwordError && <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>}
         </div>
         <div>
