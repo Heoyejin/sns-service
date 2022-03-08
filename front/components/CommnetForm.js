@@ -1,8 +1,8 @@
-import { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Form, Input, Button } from 'antd';
 import useInput from './hooks/useInput';
-import { useDispatch, useSelector } from 'react-redux';
 import { ADD_COMMENT_REQUEST } from '../reducers/post';
 
 import styles from '../assets/styles/component/commentForm.module.css';
@@ -37,7 +37,7 @@ const CommentForm = ({post}) => {
         </Form>
       </div>
     </>
-  )
+  );
 }
 
 CommentForm.prototype = {
