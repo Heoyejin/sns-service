@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import useSWR from 'swr';
 
 import Head from 'next/head';
 import AppLayout from '../components/AppLayout';
-import NicknameEditForm from '../components/NickNameEditForm';
 import FollowList from '../components/FollowList';
-import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
+import { Tabs } from 'antd';
 
 import axios from 'axios';
 import wrapper from '../store/configureStore';
@@ -22,8 +22,8 @@ const Profile = () => {
   const [followersLimit, setFollowersLimit] = useState(3);
 
   // 둘다 없으면 로딩중, 
-  const { data: followersData, error:followerError } = useSWR(`http://localhost:3065/user/followers?limit=${followersLimit}`, fetcher);
-  const { data: followingsData, error:followingError } = useSWR(`http://localhost:3065/user/followings?limit=${followingsLimit}`, fetcher);
+  const { data: followersData, error: followerError } = useSWR(`http://localhost:3065/user/followers?limit=${followersLimit}`, fetcher);
+  const { data: followingsData, error: followingError } = useSWR(`http://localhost:3065/user/followings?limit=${followingsLimit}`, fetcher);
 
   const router = useRouter();
 
@@ -56,9 +56,18 @@ const Profile = () => {
         <title>프로필</title>
       </Head>
       <AppLayout>
-        <NicknameEditForm></NicknameEditForm>
-        <FollowList header="팔로잉 목록" data={followingsData} onClickMore={loadMoreFollowings} loading={!followingsData && !followerError}></FollowList>
-        <FollowList header="팔로워 목록" data={followersData} onClickMore={loadMoreFollowers} loading={!followersData && !followerError}></FollowList>
+        <Tabs defaultActiveKey='1'>
+          <Tabs.TabPane tab="게시물" key="1">
+            게시물
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="저장됨" key="2">
+            저장된 목록
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="팔로잉/팔로워" key="3">
+            <FollowList header="팔로잉 목록" data={followingsData} onClickMore={loadMoreFollowings} loading={!followingsData && !followerError}></FollowList>
+            <FollowList header="팔로워 목록" data={followersData} onClickMore={loadMoreFollowers} loading={!followersData && !followerError}></FollowList>
+          </Tabs.TabPane>
+        </Tabs>
       </AppLayout>
       <div>내 프로필</div>
     </>
