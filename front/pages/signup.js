@@ -1,18 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import useInput from '../components/hooks/useInput';
-
-import { Checkbox } from 'antd';
-import { FormWrapper, ButtonWrapper, InputWrapper } from '../styles/account';
-import styled from 'styled-components';
-
-import { SIGN_UP_REQUEST } from '../reducers/user';
 import { useDispatch, useSelector } from 'react-redux';
+
 import Router from 'next/router';
 import AccountLayout from '../components/AccountLayout';
+import useInput from '../components/hooks/useInput';
+import { Form, Input, Button, Checkbox } from 'antd';
+import { SIGN_UP_REQUEST } from '../reducers/user';
 
-const ErrorMessage = styled.div`
-  color: 'red'
-`;
+import styles from '../assets/styles/component/accountForm.module.css';
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -69,22 +64,22 @@ const SignUp = () => {
 
   return (
     <AccountLayout>
-      <FormWrapper onFinish={onSubmit}>
+      <Form className={styles.form} onFinish={onSubmit}>
         <div>
-          <InputWrapper name="user-email" value={email} placeholder="이메일" required onChange={onChangeEmail}></InputWrapper>
-          <InputWrapper name="user-nickname" value={nickname} placeholder="닉네임" required onChange={onChangeNickname}></InputWrapper>
-          <InputWrapper type="password" name="user-password" placeholder="비밀번호" value={password} required onChange={onChangePassword}></InputWrapper>
-          <InputWrapper type="password" name="user-password" placeholder="비밀번호 확인" value={passwordCheck} required onChange={onChangePassWordCheck}></InputWrapper>
-          {passwordError && <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>}
+          <Input className={styles.input} name="user-email" value={email} placeholder="이메일" required onChange={onChangeEmail}></Input>
+          <Input className={styles.input} name="user-nickname" value={nickname} placeholder="닉네임" required onChange={onChangeNickname}></Input>
+          <Input className={styles.input} type="password" name="user-password" placeholder="비밀번호" value={password} required onChange={onChangePassword}></Input>
+          <Input className={styles.input} type="password" name="user-password" placeholder="비밀번호 확인" value={passwordCheck} required onChange={onChangePassWordCheck}></Input>
+          {passwordError && <div className={styles.errorMessage}>비밀번호가 일치하지 않습니다.</div>}
         </div>
         <div>
           <Checkbox name="user-term" checked={term} onChange={onChangeTerm}>약관에 동의하시겠습니까?</Checkbox>
-          {termError && <div style={{ color: 'red'}}>약관에 동의하셔야 합니다.</div>}
+          {termError && <div className={styles.errorMessage}>약관에 동의하셔야 합니다.</div>}
         </div>
-        <div style={{ marginTop: 10}}>
-          <ButtonWrapper type="primary" htmlType="submit" loading={ signUpLoaging }>가입</ButtonWrapper>
+        <div>
+          <Button className={styles.button} type="primary" htmlType="submit" loading={ signUpLoaging }>가입</Button>
         </div>
-      </FormWrapper>
+      </Form>
     </AccountLayout>
   )
 }

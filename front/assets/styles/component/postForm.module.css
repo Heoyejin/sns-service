@@ -1,0 +1,29 @@
+.container {
+  display: grid;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #f0f0f0;
+  margin: 10px 0px 20px;
+  padding: 20px;
+}
+
+.form {
+  display: grid;
+}
+
+.image {
+  display: inline-block;
+}
+
+.image img {
+  width: '200px';
+}
+
+.imageButton {
+  margin-top: 10;
+}
+
+.imageButton img {
+  width: 25px;
+  height: 25px;
+  margin-left: 10px;
+}

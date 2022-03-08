@@ -1,0 +1,14 @@
+.container {
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #f0f0f0;
+  padding: 10px;
+}
+
+.form {
+  display: flex;
+}
+
+.formItem {
+  flex-grow: 1;
+  margin-bottom: '0px';
+}

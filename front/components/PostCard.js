@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card, Popover, Button, Avatar, List, Comment } from "antd";
+import { Card, Popover, Button, Avatar, List, Comment } from 'antd';
 import { RetweetOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import moment from 'moment';
@@ -11,6 +11,8 @@ import PostCardContent from './PostCardContent';
 import CommentForm from './CommnetForm';
 import FollowButton from './FollowButton';
 import { REMOVE_POST_REQUEST, LIKE_POST_REQUEST, UNLIKE_POST_REQUEST, RETWEET_REQUEST } from '../reducers/post';
+
+import styles from '../assets/styles/component/postCard.module.css';
 
 moment.locale('ko');
 
@@ -69,7 +71,7 @@ const PostCard = ({ post }) => {
 
   return (
     <>
-      <div style={{ marginBottom: 20 }}>
+      <div className={styles.container}>
         <Card 
           cover={post.Images[0] && <PostImages images={post.Images} />} 
           actions={[
@@ -98,7 +100,7 @@ const PostCard = ({ post }) => {
           { post.RetweetId && post.Retweet 
             ? (
               <Card cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}>
-                <div style={{ float: 'right'}}>{moment(post.createAt).startOf('hour').fromNow()}</div>
+                <div className={styles.createTime}>{moment(post.createAt).startOf('hour').fromNow()}</div>
                 <Card.Meta 
                   avatar={(
                     <Link href={`/user/${post.Retweet.User.id}`}>
@@ -111,7 +113,7 @@ const PostCard = ({ post }) => {
               </Card>
             ) : (
               <>
-                <div style={{ float: 'right'}}>{moment(post.createAt).startOf('hour').fromNow()}</div>
+                <div className={styles.createTime}>{moment(post.createAt).startOf('hour').fromNow()}</div>
                 <Card.Meta 
                   avatar={(
                     <Link href={`/user/${post.id}`}>

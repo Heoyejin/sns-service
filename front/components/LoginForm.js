@@ -2,11 +2,13 @@ import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { Form, Input, Button } from 'antd';
+import useInput from './hooks/useInput';
 import Link from 'next/link';
 import AccountLayout from './AccountLayout';
-import { FormWrapper, ButtonWrapper, InputWrapper, BoldLink, Hr } from '../styles/account';
-import useInput from './hooks/useInput';
 import { loginRequestAction } from '../reducers/user';
+
+import styles from '../assets/styles/component/accountForm.module.css';
 
 const LoginForm = () => {
   const [email, onChangeEmail] = useInput('');
@@ -27,23 +29,23 @@ const LoginForm = () => {
   return (
     <>
       <AccountLayout>
-        <FormWrapper onFinish={ onSubmitForm }>
+        <Form className={styles.form} onFinish={ onSubmitForm }>
           <div>
-            <InputWrapper name="user-email" value={ email } placeholder="이메일" onChange={ onChangeEmail }></InputWrapper>
-            <InputWrapper name="user-password"
+            <Input className={styles.input} name="user-email" value={ email } placeholder="이메일" onChange={ onChangeEmail }></Input>
+            <Input className={styles.input} name="user-password"
                 type="password"
                 value={ password }
                 placeholder="비밀번호"
                 onChange={ onChangePassWord }
                 required>
-            </InputWrapper>
-            <ButtonWrapper type="primary" htmlType="submit" loading={ logInLoading }>로그인</ButtonWrapper>
+            </Input>
+            <Button className={styles.button} type="primary" htmlType="submit" loading={ logInLoading }>로그인</Button>
           </div>
-          <Hr/>
-          <div style={{ textAlign: 'center' }}>
-            <Link href="/signup"><BoldLink>회원가입</BoldLink></Link>
+          <hr className={styles.hr} />
+          <div className={styles.signup}>
+            <Link href="/signup"><a>회원가입</a></Link>
           </div>
-        </FormWrapper>
+        </Form>
       </AccountLayout>
     </>
   )
@@ -52,5 +54,5 @@ const LoginForm = () => {
 LoginForm.proptypes = {
   setIsLogged: PropTypes.func.isRequired,
 };
-  
+
 export default LoginForm;

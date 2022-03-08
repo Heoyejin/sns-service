@@ -1,0 +1,27 @@
+.container {
+  background-color: rgb(250, 250, 250);
+}
+
+.menu {
+  width: 100%;
+  text-align: center;
+}
+
+.content {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.contentLeft {
+  width: 45%;
+  margin-right: 20px;
+}
+
+.contentRight {
+  width: 20%;
+  margin-top: 10px;
+}
+

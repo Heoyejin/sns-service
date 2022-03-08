@@ -4,14 +4,8 @@ import { Form, Input, Button } from 'antd';
 import useInput from './hooks/useInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { ADD_COMMENT_REQUEST } from '../reducers/post';
-import styled from 'styled-components';
 
-const CommentFormWrapper = styled.div`
-  display: flex;
-  background-color: rgb(255, 255, 255);
-  border: 1px solid #f0f0f0;
-  padding: 10px;
-`;
+import styles from '../assets/styles/component/commentForm.module.css';
 const CommentForm = ({post}) => {
   const dispatch = useDispatch();
   const id = useSelector((state) => state.user.me?.id);
@@ -34,14 +28,14 @@ const CommentForm = ({post}) => {
 
   return (
     <>
-      <CommentFormWrapper>
-        <Form onFinish={onSubmitComment} style={{ width: '100%' }}>
-          <Form.Item style={{ marginBottom: '0px' }}>
+      <div className={styles.container}>
+        <Form className={styles.form} onFinish={onSubmitComment}>
+          <Form.Item className={styles.formItem}>
             <Input value={commentText} onChange={onChangeCommnetText} rows={4} bordered={false} placeholder='댓글 달기...'/>
           </Form.Item>
-        </Form>     
-        <Button htmlType='submit' loading={addCommentLoading}>입력</Button>
-      </CommentFormWrapper>
+          <Button htmlType='submit' loading={addCommentLoading}>입력</Button>
+        </Form>
+      </div>
     </>
   )
 }

@@ -4,16 +4,10 @@ import { Button, Form, Input } from 'antd';
 import { ADD_POST_REQUEST } from '../reducers/post';
 import useInput from './hooks/useInput';
 import { UPLOAD_IMAGES_REQUEST, REMOVE_IMAGES } from '../reducers/post';
-import styled from 'styled-components';
 import imageButton from '../assets/images/image.png';
 
-const PostFormWrapper = styled.div`
-  display: grid;
-  background-color: rgb(255, 255, 255);
-  border: 1px solid #f0f0f0;
-  margin: 10px 0px 20px;
-  padding: 20px;
-`;
+import { AlignRightButton } from '../assets/styles/global';
+import styles from '../assets/styles/component/postForm.module.css';
 
 const PostForm = () => {
   const { imagePaths, addPostDone } = useSelector((state) => state.post);
@@ -48,7 +42,6 @@ const PostForm = () => {
   }, [text, imagePaths]);
 
   const onChangeImages = useCallback((e) => {
-    console.log('image', e.target.files);
     const imageFormData = new FormData();
     [].forEach.call(e.target.files, (f) => {
       imageFormData.append('image', f);
@@ -69,8 +62,8 @@ const PostForm = () => {
 
   return (
     <>
-      <PostFormWrapper>
-        <Form encType="multipart/form-data" onFinish={onSubmit}>
+      <div className={styles.container}>
+        <Form className={styles.form} encType="multipart/form-data" onFinish={onSubmit}>
           <Input.TextArea
             rows={6}
             value={text}
@@ -88,8 +81,8 @@ const PostForm = () => {
             {
               imagePaths &&
                 imagePaths.map((v, i) => (
-                  <div key={v} style={{ display: 'inline-block' }}>
-                    <img src={`http://localhost:3065/${v}`} style={{ width: '200px' }} alt={v} />
+                  <div className={styles.image} key={v}>
+                    <img src={`http://localhost:3065/${v}`} alt={v} />
                     <div>
                       <Button onClick={onRemoveImage(i)} >제거</Button>
                     </div>
@@ -97,12 +90,12 @@ const PostForm = () => {
               ))
             }
           </div>
+          <div className={styles.imageButton}>
+            <img src={imageButton} alt="" onClick={onClickImageUpload}/>
+            <AlignRightButton htmlType='submit'>업로드</AlignRightButton>
+          </div>
         </Form>
-        <div style={{ marginTop: 10 }}>
-          <img src={imageButton} alt="" onClick={onClickImageUpload} style={{ width: '25px', height: '25px', marginLeft: '10px' }}/>
-          <Button style={{ float: 'right' }} htmlType='submit'>업로드</Button>
-        </div>
-      </PostFormWrapper>
+      </div>
     </>
   )
 }

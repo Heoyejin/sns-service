@@ -1,38 +1,21 @@
 import React from 'react';
-
-import styled from 'styled-components';
-import { Card } from 'antd';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
+import { Card } from 'antd';
 
 import axios from 'axios';
 import wrapper from '../store/configureStore';
 import { END } from 'redux-saga';
 
-const AccountWrapper = styled.div`
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgb(250, 250, 250);
-  justify-content: center;
-  align-items: center;
-`;
-
-const CardWrapper = styled(Card)`
-  width: 350px;
-  border: solid 1px rgb(219,219,219);
-`;
+import styles from '../assets/styles/component/accountLayout.module.css';
 
 const AccountLayout = ({ children }) => {
-
   return (
     <>
-      <AccountWrapper>
-        <CardWrapper>
-          { children }
-        </CardWrapper>
-      </AccountWrapper>
+      <div className={styles.container}>
+        <Card className={styles.card}>{ children }</Card>
+      </div>
     </>
-  )
+  );
 }
 
 export const getServerSideProps = wrapper.getServerSideProps(store => async ({req, res, next}) => {

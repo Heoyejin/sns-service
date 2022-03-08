@@ -40,7 +40,7 @@ const FollowList = ({ header, data, onClickMore, loading }) => {
       )}
       >
     </List>
-  )
+  );
 };
 
 FollowList.propTypes = {
