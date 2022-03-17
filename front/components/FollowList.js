@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, List, Button } from 'antd';
+import { List, Avatar, Button } from 'antd';
 import { StopOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import { UNFOLLOW_REQUEST, REMOVE_FOLLOWER_REQUEST } from '../reducers/user';
+
+import styles from '../assets/styles/component/followList.module.css';
 
 const FollowList = ({ header, data, onClickMore, loading }) => {
   const dispatch = useDispatch();
@@ -22,24 +24,26 @@ const FollowList = ({ header, data, onClickMore, loading }) => {
   };
 
   return (
-    <List
-      style={{margin: 20}}
-      grid={{ gutter: 4, xs:2, md:3}}
-      size="small"
-      header={<div>{header}</div>}
-      loadMore={<div style={{ textAlign: 'center', margin: '10px 0'}}>
-        <Button onClick={onClickMore} loading={loading}>더 보기</Button></div>}
-      bordered
-      dataSource={data}
-      renderItem={(item) => (
-        <List.Item style={{marginTop: 20}}>
-          <Card actions={[<StopOutlined key="stop" onClick={onCancel(item.id)} />]}>
-            <Card.Meta description={item.nickname}></Card.Meta>
-          </Card>
-        </List.Item>
-      )}
-      >
-    </List>
+    <>
+      <div className={styles.container}>
+        <List
+          header={<div>{header}</div>}
+          bordered
+          loadMore={<div style={{ textAlign: 'center', margin: '10px 0'}}>
+            <Button onClick={onClickMore} loading={loading}>더 보기</Button></div>}
+          dataSource={data}
+          renderItem={(item) => (
+            <List.Item key={item.id}>
+              <List.Item.Meta
+                avatar={<Avatar>{item.nickname}</Avatar>}
+                title={<a href="https://ant.design">{item.nickname}</a>}
+                description={item.email}
+              />
+            </List.Item>
+          )}
+        />
+      </div>
+    </>
   );
 };
 
