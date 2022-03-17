@@ -1,17 +1,23 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import useSWR from 'swr';
 
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { Tabs } from 'antd';
 import AppLayout from '../components/AppLayout';
 import FollowList from '../components/FollowList';
-import { useRouter } from 'next/router';
+import PostCard from '../components/PostCard';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
-import { Tabs } from 'antd';
+import { LOAD_USER_POSTS_REQUEST } from '../reducers/post';
+
 
 import axios from 'axios';
 import wrapper from '../store/configureStore';
 import { END } from 'redux-saga';
+
+import styles from '../assets/styles/pages/profile.module.css';
+import { TabAlignCenter } from '../assets/styles/global';
 
 // graphql도 사용해보기
 const fetcher = (url) => axios.get(url, { withCredentials: true }).then((result) => result.data);
@@ -24,13 +30,21 @@ const Profile = () => {
   // 둘다 없으면 로딩중, 
   const { data: followersData, error: followerError } = useSWR(`http://localhost:3065/user/followers?limit=${followersLimit}`, fetcher);
   const { data: followingsData, error: followingError } = useSWR(`http://localhost:3065/user/followings?limit=${followingsLimit}`, fetcher);
+  const { mainPosts } = useSelector((state) => state.post);
 
   const router = useRouter();
+  const dispatch = useDispatch();
 
   // 로그인 하지 않고 프로필 화면으로 가는 경우 오류
   useEffect(() => {
     if (!(me && me.id)) {
       router.push('/');
+    } else {
+      dispatch({
+        type: LOAD_USER_POSTS_REQUEST,
+        lastId: mainPosts[mainPosts.length - 1] && mainPosts[mainPosts.length - 1].id,
+        data: me.id
+      });
     }
   }, [me && me.id]);
 
@@ -56,9 +70,18 @@ const Profile = () => {
         <title>프로필</title>
       </Head>
       <AppLayout>
-        <Tabs defaultActiveKey='1'>
-          <Tabs.TabPane tab="게시물" key="1">
-            게시물
+        <TabAlignCenter/>
+        <Tabs defaultActiveKey='1' centered>
+          <Tabs.TabPane tab="게시물" key="1" >
+            <div className={ styles.container }>
+              <div className={ styles.card }>
+                { 
+                  mainPosts && mainPosts.map((c) => (
+                    <PostCard key={c.id} post={c} />
+                  ))
+                }
+              </div>
+            </div>
           </Tabs.TabPane>
           <Tabs.TabPane tab="저장됨" key="2">
             저장된 목록
@@ -69,7 +92,6 @@ const Profile = () => {
           </Tabs.TabPane>
         </Tabs>
       </AppLayout>
-      <div>내 프로필</div>
     </>
   )
 }
