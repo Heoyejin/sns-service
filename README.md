@@ -1,1 +1,1 @@
-# study_nodebird_twitter
+# SNS Service
