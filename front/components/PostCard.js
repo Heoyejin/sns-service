@@ -87,15 +87,19 @@ const PostCard = ({ post }) => {
                     <Button>수정</Button>
                     <Button type='danger' onClick={onRemovePost} loading={ removeCommentLoading }>삭제</Button>
                   </>
-                ) : 
-                <Button>신고</Button>}
+                ) : (
+                  <>
+                    <Button>신고</Button>
+                    <FollowButton post={post}/>
+                  </>
+                )
+              }
               </Button.Group>
             )}>
               <EllipsisOutlined />
             </Popover>
           ]}
           title={ post.RetweetId ? `${post.User.nickname}님이 리트윗 하였습니다.` : null }
-          extra={id && <FollowButton post={post}/>}
           >
           { post.RetweetId && post.Retweet 
             ? (
