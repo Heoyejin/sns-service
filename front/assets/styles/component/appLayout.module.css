@@ -16,12 +16,12 @@
 }
 
 .contentLeft {
-  width: 45%;
+  width: 600px;
   margin-right: 20px;
 }
 
 .contentRight {
-  width: 20%;
+  width: 300px;
   margin-top: 10px;
 }
 

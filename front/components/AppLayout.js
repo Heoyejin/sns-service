@@ -41,7 +41,7 @@ const AppLayout = ({ children }) => {
         </Menu.Item>
       </Menu>
       <div className={styles.content}>
-        <div className={styles.contentLeft}>{children}</div>
+        <div className={styles.contentLeft}>{ children }</div>
         <div className={styles.contentRight}>{ me && <UserProfile/> }</div>
       </div>
     </div>
