@@ -16,7 +16,7 @@ import styles from '../assets/styles/component/postCard.module.css';
 
 moment.locale('ko');
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, className }) => {
   const id = useSelector((state) => state.user.me?.id);
   const liked = post.Likers.find((v) => v.id === id);
   const { removeCommentLoading, retweetError } = useSelector((state) => state.post);
@@ -72,7 +72,8 @@ const PostCard = ({ post }) => {
   return (
     <>
       <div className={styles.container}>
-        <Card 
+        <Card
+          className={className}
           cover={post.Images[0] && <PostImages images={post.Images} />} 
           actions={[
             <RetweetOutlined key='retweet' onClick={onRetweet}/>,

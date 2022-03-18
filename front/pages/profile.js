@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import { Tabs } from 'antd';
 import AppLayout from '../components/AppLayout';
 import FollowList from '../components/FollowList';
-import PostCard from '../components/PostCard';
+import { ProfilePost } from '../assets/styles/global';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import { LOAD_USER_POSTS_REQUEST } from '../reducers/post';
 
@@ -74,13 +74,11 @@ const Profile = () => {
         <Tabs defaultActiveKey='1' centered>
           <Tabs.TabPane tab="게시물" key="1" >
             <div className={ styles.container }>
-              <div className={ styles.card }>
-                { 
-                  mainPosts && mainPosts.map((c) => (
-                    <PostCard key={c.id} post={c} />
-                  ))
-                }
-              </div>
+              { 
+                mainPosts && mainPosts.map((c) => (
+                  <ProfilePost key={c.id} post={c} />
+                ))
+              }
             </div>
           </Tabs.TabPane>
           <Tabs.TabPane tab="저장됨" key="2">

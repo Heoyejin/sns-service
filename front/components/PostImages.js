@@ -7,8 +7,6 @@ import styles from '../assets/styles/component/postImage.module.css';
 const PostImages = ({ images }) => {
   const [showImageZoom, setShowImageZoom] = useState(false);
 
-  // 함수 호출이 ``로도 가능하기 때문에 styled component 사용방법이 저럼
-
   const onZoom =useCallback(() => {
     setShowImageZoom(true);
   }, []);
@@ -34,18 +32,16 @@ const PostImages = ({ images }) => {
 
   return (
     <>
-      <div>
-        <img role='presentation' src={`http://localhost:3065/${images[0].src}`} alt={images[0].src}  width="50%"  onClick={onZoom} />
-        <div
-          role='presentation'
-          className={styles.presentation}
-          onClick={onZoom}
-        >
-          <PlusOutlined />
-          <br/>
-          {images.length - 1}
-            개의 사진 더보기
-        </div>
+      <img role='presentation' src={`http://localhost:3065/${images[0].src}`} alt={images[0].src}  width="50%" onClick={onZoom} />
+      <div
+        role='presentation'
+        className={styles.presentation}
+        onClick={onZoom}
+      >
+        <PlusOutlined />
+        <br/>
+        {images.length - 1}
+          개의 사진 더보기
       </div>
       { showImageZoom && <ImagesZoom images={images} onClose={onZoom} /> }
     </>
@@ -53,6 +49,7 @@ const PostImages = ({ images }) => {
 };
 
 PostImages.prototype = {
+  className: PropTypes.element,
   images: PropTypes.arrayOf(PropTypes.shape({
     src: PropTypes.string,
   })).isRequired,
