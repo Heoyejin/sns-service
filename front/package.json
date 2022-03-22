@@ -1,5 +1,5 @@
 {
-  "name": "study_nodebird_twitter",
+  "name": "sns-service",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Heoyejin/study_nodebird_twitter.git"
+    "url": "git+https://github.com/Heoyejin/sns-service.git"
   },
   "author": "HoooYejin",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Heoyejin/study_nodebird_twitter/issues"
+    "url": "https://github.com/Heoyejin/sns-service/issues"
   },
-  "homepage": "https://github.com/Heoyejin/study_nodebird_twitter#readme",
+  "homepage": "https://github.com/Heoyejin/sns-service#readme",
   "dependencies": {
     "@ant-design/icons": "^4.6.2",
     "@next/bundle-analyzer": "^12.0.10",
