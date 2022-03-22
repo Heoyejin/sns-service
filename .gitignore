@@ -11,3 +11,5 @@ back/uploads/
 package-lock.json
 
 .DS_store
+
+.pem
