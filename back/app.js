@@ -10,8 +10,9 @@ const passport = require('passport');
 const passportConfig = require('./passport');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
-
 const path = require('path');
+const hpp = require('hpp');
+const helmet = require('helmet');
 
 var cors = require('cors');
 const session = require('express-session');
@@ -30,12 +31,19 @@ db.sequelize.sync()
 
 // passport 실행
 passportConfig();
-app.use(morgan('dev'));
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(morgan('combined'));
+  app.use(hpp());
+  app.use(helmet());
+} else {
+  app.use(morgan('dev'));
+}
 
 // 브라우저와 서버의 도메인이 다르기 때문에 cors모듈을 이용하여 허용해줘야함.
 // AccessControl
 app.use(cors({
-  origin: 'http://localhost:3033',
+  origin: ['http://localhost:3033', 'sns-service.com'],
   credentials: true,
 }));
 app.use('/', express.static(path.join(__dirname, 'uploads')));
