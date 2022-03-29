@@ -1,22 +1,20 @@
 const express = require('express');
-const postRouter = require('./routes/post');
-const postsRouter = require('./routes/posts');
-const userRouter = require('./routes/user');
-const hashtagRouter = require('./routes/hashtag');
-
-const db = require('./models');
-
+const cors = require('cors');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const passport = require('passport');
-const passportConfig = require('./passport');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const path = require('path');
 const hpp = require('hpp');
 const helmet = require('helmet');
 
-var cors = require('cors');
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
+const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
+const userRouter = require('./routes/user');
+const hashtagRouter = require('./routes/hashtag');
+const db = require('./models');
+const passportConfig = require('./passport');
 
 // 보안을 위해 .env 설정하기
 dotenv.config();
@@ -73,7 +71,7 @@ app.use('/posts', postsRouter);
 app.use('/user', userRouter);
 app.use('/hashtag', hashtagRouter);
 
-app.listen(3065, () => {
+app.listen(80, () => {
   console.log('서버 실행중..!');
 });
 
