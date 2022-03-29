@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import ImagesZoom from './ImagesZoom';
 
 import styles from '../assets/styles/component/postImage.module.css';
-
-import { backURL } from '../config/config';
 const PostImages = ({ images }) => {
   const [showImageZoom, setShowImageZoom] = useState(false);
 
@@ -16,7 +14,7 @@ const PostImages = ({ images }) => {
   if (images.length === 1) {
     return (
       <>
-        <img role='presentation' src={`${backURL}/${images[0].src}`} alt={images[0].src} onClick={onZoom} />
+        <img role='presentation' src={images[0].src} alt={images[0].src} onClick={onZoom} />
         { showImageZoom && <ImagesZoom images={images} onClose={onZoom} /> }
       </>
     )
@@ -24,8 +22,8 @@ const PostImages = ({ images }) => {
     return (
       <>
         <div>
-          <img role='presentation' width='50%' src={`${backURL}/${images[0].src}`} alt={images[0].src} onClick={onZoom} />
-          <img role='presentation' width='50%' src={`${backURL}/${images[1].src}`} alt={images[1].src} onClick={onZoom} />
+          <img role='presentation' width='50%' src={images[0].src} alt={images[0].src} onClick={onZoom} />
+          <img role='presentation' width='50%' src={images[1].src} alt={images[1].src} onClick={onZoom} />
         </div>
         { showImageZoom && <ImagesZoom images={images} onClose={onZoom} /> }
       </>
@@ -34,7 +32,7 @@ const PostImages = ({ images }) => {
 
   return (
     <>
-      <img role='presentation' src={`${backURL}/${images[0].src}`} alt={images[0].src}  width="50%" onClick={onZoom} />
+      <img role='presentation' src={images[0].src} alt={images[0].src}  width="50%" onClick={onZoom} />
       <div
         role='presentation'
         className={styles.presentation}

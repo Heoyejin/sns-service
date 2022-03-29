@@ -5,6 +5,7 @@ const fs = require('fs');
 
 const { Post, Image, User, Comment, Hashtag } = require('../models');
 const { isLoggedIn } = require('./middlewares');
+const multerS3 = require('multer-s3');
 
 const router = express.Router();
 
@@ -16,17 +17,19 @@ try {
   fs.mkdirSync('uploads');
 }
 
+AWS.config.update({
+  accessKeyId: process.env.S3_ACCESS_KEY_ID,
+  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  region: 'ap-northeast-2'
+});
+
 /* multer를 이용하여 이미지 업로드 하기  */
 const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, done) {
-      done(null, 'uploads');
-    },
-    filename(req, file, done) { // ex) 호예진.png
-      // 중복된 파일 명 처리
-      const ext = path.extname(file.originalname);  // 확장자 추출(.png)
-      const basename = path.basename(file.originalname, ext); // 호예진
-      done(null, basename + '_' + new Date().getTime() + ext);  // 호예진15184712891.png
+  storage: multerS3({
+    s3: new AWS.S3(),
+    bucket: 'sns-service-by-heo',
+    key(req, file, cb) {
+      cb(null, `original/${Date.new()}_${path.basename(file.originalname)}`)
     }
   }),
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB로 제한..
@@ -141,7 +144,7 @@ router.get('/:postId', async (req, res, next) => {
 router.post('/images', isLoggedIn, upload.array('image'), async (req, res, next) => { // upload.single('image') - 단일 이미지
   // 이미지 업로드 후에 실행됨
   console.log('router', req.files);
-  res.json(req.files.map((v) => v.filename));
+  res.json(req.files.map((v) => v.location));
 });
 
 router.patch('/:postId/like', isLoggedIn, async (req, res, next) => {
@@ -215,7 +218,7 @@ router.delete('/:postId', isLoggedIn, async (req, res, next) => {    //Delete /p
   }
 });
 
-router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {    //Delete /post
+router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {
   try {
     const post = await Post.findOne({
       where: { id: req.params.postId },
