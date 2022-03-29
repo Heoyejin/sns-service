@@ -9,6 +9,8 @@ import imageButton from '../assets/images/image.png';
 import { AlignRightButton } from '../assets/styles/global';
 import styles from '../assets/styles/component/postForm.module.css';
 
+import { backURL } from '../config/config';
+
 const PostForm = () => {
   const { imagePaths, addPostDone } = useSelector((state) => state.post);
   const dispatch = useDispatch();
@@ -82,7 +84,7 @@ const PostForm = () => {
               imagePaths &&
                 imagePaths.map((v, i) => (
                   <div className={styles.image} key={v}>
-                    <img src={`http://localhost:3065/${v}`} alt={v} />
+                    <img src={`${backURL}/${v}`} alt={v} />
                     <div>
                       <Button onClick={onRemoveImage(i)} >제거</Button>
                     </div>
