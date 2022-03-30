@@ -6,6 +6,7 @@ const fs = require('fs');
 const { Post, Image, User, Comment, Hashtag } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 const multerS3 = require('multer-s3');
+const AWS = require('aws-sdk');
 
 const router = express.Router();
 
