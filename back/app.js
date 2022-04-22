@@ -41,7 +41,7 @@ if (process.env.NODE_ENV === 'production') {
 // 브라우저와 서버의 도메인이 다르기 때문에 cors모듈을 이용하여 허용해줘야함.
 // AccessControl
 app.use(cors({
-  origin: ['http://localhost:3033', 'sns-service.com', 'http://13.125.250.45'],
+  origin: ['http://localhost:3033', 'sns-service.com', process.env.SERVER_IP],
   credentials: true,
 }));
 app.use('/', express.static(path.join(__dirname, 'uploads')));
