@@ -1,7 +1,5 @@
 # SNS Service
-
-## About
-[Twitter](https://twitter.com/?lang=ko)와 [Instagram](https://www.instagram.com/)을 clone coding 한 프로젝트 입니다.
+> [Twitter](https://twitter.com/?lang=ko)와 [Instagram](https://www.instagram.com/)을 clone coding 한 프로젝트 입니다.
 
 ## Preview
 ![](./assets/images/preview-main1.png)
